@@ -20,12 +20,6 @@ const SeatBooking = () => {
   const selectedTicketPrice = ticketPrices[category] || ticketPrices.Silver;
   // Function to handle seat selection confirmation
   const handleSeatsConfirm = (selection) => {setSeatsInfo(selection);setSelectedSeats([]);};
-  const formatShowtime = (time) => {
-    const [hourMinute, meridian] = time.split(" "); 
-    const [hour, minute] = hourMinute.split(":"); 
-    const formattedHour = hour.length === 1 ? `0${hour}` : hour.replace(/^0/, ""); 
-    return `${formattedHour}:${minute} ${meridian}`;
-  };
   const handleModalClose = () => setShowModal(false);
   const handleModalOpen = () => setShowModal(true);
   // Helper function to format date and Determine if the date is "Today"
@@ -97,7 +91,7 @@ const SeatBooking = () => {
             <h6 className="fs-5 fw-bold text-dark d-flex align-items-center justify-content-center ">{movieTitle} </h6>
             <button id="badge" style={{ width: '25px', height: '25px' }} className="btn border-secondary rounded-circle d-flex align-items-center justify-content-center "> <small className="badge text-secondary">{certification}</small> </button>
           </div>
-          <p className="m-0 text-muted fw-bold">{theaterName} , {theaterLocation} | {formattedDate},{formatShowtime(selectedShowtime)}</p>
+          <p className="m-0 text-muted fw-bold">{theaterName} , {theaterLocation} | {formattedDate},{selectedShowtime}</p>
         </div>
         <button className="btn btn-outline-secondary btn-sm d-flex align-items-center me-3" onClick={handleModalOpen}>
           {seatsInfo && seatsInfo.seats ? `${seatsInfo.seats} Tickets` : `${seats} Tickets`}<FaPen className="ms-2" />

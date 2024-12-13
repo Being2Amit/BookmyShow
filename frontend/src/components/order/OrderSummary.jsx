@@ -32,12 +32,6 @@ function OrderSummary() {
       ? `Today, ${formatDate(date)}` : formatDate(date);
   };
   const formattedDate = Data.selectedDate ? getDateLabel(Data.selectedDate) : "";
-  const formatShowtime = (time) => {
-    const [hourMinute, meridian] = time.split(" ");
-    const [hour, minute] = hourMinute.split(":");
-    const formattedHour = hour.length === 1 ? `0${hour}` : hour.replace(/^0/, "");
-    return `${formattedHour}:${minute} ${meridian}`;
-  };
   const saveBooking = async (data) => {
     //console.log("Booking saved", data);
     const bookingData = { movieTitle: Data.movieTitle,theater: Data.theaterName, Location: Data.theaterLocation, screen:Data.screenName,selectedSeats: Data.selectedSeats,selectedDate: Data.selectedDate,selectedShowtime: Data.selectedShowtime,
@@ -73,7 +67,7 @@ function OrderSummary() {
           })}
           <div className="d-flex justify-content-between align-items-center">
             <p className="mb-0 text-muted"><strong>{formattedDate}</strong></p>
-            <p className="mb-0 text-muted">{formatShowtime(Data.selectedShowtime)}</p>
+            <p className="mb-0 text-muted">{Data.selectedShowtime}</p>
           </div>
           <hr />
           <div className="d-flex justify-content-between align-items-center">

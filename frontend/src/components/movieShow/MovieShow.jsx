@@ -45,7 +45,7 @@ function MovieShow() {
   useEffect(() => {
     const fetchTheaters = async () => {
       try {
-        const response = await axios.get('https://mocki.io/v1/722b8a59-ce98-435e-98f0-5a271774f36e');
+        const response = await axios.get('https://mocki.io/v1/e659f72f-a4f0-4f1c-a938-86aee636728b');
         setTheaters(response.data);
       } catch (error) {
         console.error("Error fetching theaters data:", error);
@@ -186,7 +186,7 @@ function MovieShow() {
                   <span className="badge" style={{ color: "#ffa426" }}><i className="bi bi-cup-straw fs-5"></i> Food & Beverage</span>
                 </div>
               </div>
-              <div className="col-4">
+              <div className="col-6">
                 <div className="showtimes">
                   {theater.features?.showtimes?.length > 0 ? (
                     theater.features.showtimes.map((time, idx) => (
@@ -195,8 +195,8 @@ function MovieShow() {
                   }
                 </div>
                 <div className="note">
-                <span className={`badge fs-6 ${index % 2 === 0 ? "text-warning" : "text-success"}`}>•</span>
-                  {index % 2 === 0 ? "Non-cancellable" : "Cancellation Available"}
+                  <span className={`badge fs-6 ${theater.features?.screen_type.includes("Cancellable") ? "text-success" : "text-warning"}`}>•</span>
+                  {theater.features?.screen_type.includes("Cancellable") ? "Cancellation Available" : "Non-Cancellable"}
                 </div>
               </div>
             </div>

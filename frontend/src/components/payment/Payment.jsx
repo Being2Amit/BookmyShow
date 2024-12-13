@@ -45,12 +45,6 @@ function  Payment () {
     setError('');
     setData({ ...data, [name]: value });
   };
-  const formatShowtime = (time) => {
-    const [hourMinute, meridian] = time.split(" "); 
-    const [hour, minute] = hourMinute.split(":"); 
-    const formattedHour = hour.length === 1 ? `0${hour}` : hour.replace(/^0/, ""); 
-    return `${formattedHour}:${minute} ${meridian}`;
-  };
   const handleMakePayment= () => {
     setShowPaymentOptions(true);
     //setShowPaymentOptions((prevState) => !prevState); // Show payment options when the button is clicked
@@ -190,7 +184,7 @@ function  Payment () {
             } return null;
           })}
           <p className="text-muted">{formattedDate} <br />
-          <span className="text-muted">{formatShowtime(Data.selectedShowtime)}</span> </p>
+          <span className="text-muted">{Data.selectedShowtime}</span> </p>
           <hr />
           <div className="d-flex justify-content-between">
             <p className="mb-1">Sub Total:</p>

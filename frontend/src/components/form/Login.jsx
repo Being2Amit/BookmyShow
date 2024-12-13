@@ -29,7 +29,6 @@ function Login() {
       if (res.data.success) {
         localStorage.setItem('token', res.data.token);
         console.log(res.data);
-        
         setError('');
         login();
         navigate('/');
