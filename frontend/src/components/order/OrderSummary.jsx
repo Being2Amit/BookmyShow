@@ -51,7 +51,7 @@ function OrderSummary() {
 
   return (
     <div className="order-summary mt-5 container d-flex justify-content-center align-items-center">
-      <div className="card col-md-8 col-lg-6 p-3 bg-light">
+      <div className="card Order position-relative col-md-8 col-lg-6 p-3 bg-light">
         <h5 className="card-title text-uppercase text-danger text-center">Order Summary</h5>
         <div className="card-body">
           <p className="d-flex justify-content-between align-items-center mb-1">
@@ -69,27 +69,33 @@ function OrderSummary() {
             <p className="mb-0 text-muted"><strong>{formattedDate}</strong></p>
             <p className="mb-0 text-muted">{Data.selectedShowtime}</p>
           </div>
-          <hr />
+          <hr style={{border:"1px dashed"}} />
           <div className="d-flex justify-content-between align-items-center">
             <p className="mb-0"><strong>Payment ID:</strong></p>
             <p className="mb-0 text-muted">{Data.paymentId.replace("pay_", "")}</p>
           </div>
-          <hr />
+          <hr style={{border:"1px dashed"}} />
           <div className="d-flex justify-content-between">
             <p className="mb-1"><strong>Sub Total:</strong></p>
             <p className="mb-1">Rs. {Data.totalSeatsPrice}</p>
           </div>
           <div className="d-flex justify-content-between">
-            <p className="mb-1">+ Convenience fees:</p>
+            <p className="mb-1">Convenience fees:</p>
             <p className="mb-1">Rs. {Data.convenienceFee}</p>
           </div>
-          <hr />
+          <hr style={{border:"1px dashed"}} />
           <div className="d-flex justify-content-between align-items-center">
             <p className="mb-0"><strong>Amount Payable:</strong></p>
             <p className="mb-0 text-muted"><strong>Rs. {Data.totalAmount}</strong></p>
           </div>
         </div>
       </div>
+      <style>
+        { `.Order::before, .Order::after {content: '';position: absolute;width: 20px;height: 20px;background-color: white;border-radius: 50%;border: 1px solid #ccc;top: 50%; transform: translateY(-50%);}
+          .Order::before { left: -5px; border-left: 1px solid white; }
+          .Order::after { right: -5px; border-right: 1px solid white; }
+        `}
+      </style>
       <ToastContainer/>
     </div>
   );

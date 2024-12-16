@@ -40,7 +40,7 @@ function Foot () {
 
         {/* Copyright */}
         <div className="text-center">
-          <p className="mb-0">&copy; {new Date().getFullYear()} BookMyShow. All Rights Reserved.</p>
+          <p className="mb-0">&copy; {new Date().getFullYear()} MovieHive. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

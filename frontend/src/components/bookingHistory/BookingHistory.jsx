@@ -96,7 +96,7 @@ const BookingHistory = () => {
   else {displayedBookings = allBookings;}
 
   return (
-    <div className="container py-5">
+    <div className="container px-5 py-3">
       <h2 className="mb-4">Booking History</h2>
       <div className="mb-4">
         <button className={`btn ${activeTab === 'all' ? 'btn-primary' : 'btn-secondary'} me-2`} onClick={() => setActiveTab('all')}>All Bookings</button>

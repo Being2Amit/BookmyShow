@@ -122,7 +122,7 @@ function MovieDetails() {
             </div>
             {/* details div */}
             <div className="text-white" style={{ maxWidth: '500px' }}>
-              <h1 className="text-light mb-3">{movieDetails.title}</h1>
+              <h1 className="text-warning mb-3">{movieDetails.title}</h1>
               <div className="btn btn-dark mb-2"><i className="text-danger px-1 bi bi-star-fill"></i> <span className="px-1">{rating}</span><span className="px-1">({votes} votes){">"}</span>&nbsp;&nbsp;
                 <button className="btn btn-light mx-2 me-2">Rate now</button></div>
               <p className="mb-3">{formattedRuntime} • {genres} • {certification} • {formattedReleaseDate}</p>

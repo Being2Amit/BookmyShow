@@ -46,8 +46,11 @@ function  Payment () {
     setData({ ...data, [name]: value });
   };
   const handleMakePayment= () => {
+    if (!loggedIn) {
+      toast.error("Please log in to enable payment options.");
+      return;
+    }
     setShowPaymentOptions(true);
-    //setShowPaymentOptions((prevState) => !prevState); // Show payment options when the button is clicked
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,9 +84,9 @@ function  Payment () {
         key_secret: 'EmH6eToe5CvCfAfgfADREv3C',
         amount: Data.totalAmount * 100,
         currency: "INR",
-        name: "BookMyShow",
+        name: "MovieHive.com",
         description: "Movie Ticket Payment",
-        image: "BMS.png",
+        image: "logo.png",
         handler: (response) => {// Only proceed if paymentStatus is not set (avoiding duplicate processing)
           if (!paymentStatus) {
             console.log(response);
@@ -154,7 +157,7 @@ function  Payment () {
         <div className="accordion mb-3" id="paymentAccordion">
           <div className="accordion-item ">
           <h2 className="accordion-header" id="headingPayment">
-              <button className="accordion-button collapsed bg-light" style={{ paddingLeft: "40%" }} type="button"onClick={handleMakePayment}>
+              <button className="accordion-button collapsed bg-light" style={{ paddingLeft: "40%" }} type="button"onClick={handleMakePayment} disabled={!loggedIn}>
                 {showPaymentOptions ? "Payment Options" : "Make Payment"}
               </button>
             </h2>
@@ -167,35 +170,38 @@ function  Payment () {
             )}
           </div>
         </div>
-      </div>
-       {/* Right Section: Order Summary */}
-       <div className="card col-md-5">
-        <div className="card-title mt-3 mx-3 text-uppercase text-secondary">Order Summary</div>
-        <div className="card-body">
-          <p className="d-flex justify-content-between align-items-center mb-1">
-            <strong>{Data.movieTitle} ({Data.selectedLanguage}) ({Data.certification})</strong>&nbsp;
-            <span className="badge bg-secondary text-white">{Data.selectedSeats.length} {Data.selectedSeats.length > 1 ? "Tickets" : "Ticket"}</span>
-          </p>
-          <p className="text-muted mb-1">{Data.selectedLanguage}, {Data.selectedFormat}</p>
-          <p className="text-muted mb-1">{Data.theaterName}: {Data.theaterLocation} ({Data.screenName})</p>
-          {Object.entries(groupedSeats).map(([category, seats], index) => {
-            if (seats.length > 0) {return (<p className="text-muted mb-1" key={index}>
-              {category.charAt(0).toUpperCase() + category.slice(1)} - {seats.join(", ")}</p>);
-            } return null;
-          })}
-          <p className="text-muted">{formattedDate} <br />
-          <span className="text-muted">{Data.selectedShowtime}</span> </p>
-          <hr />
-          <div className="d-flex justify-content-between">
-            <p className="mb-1">Sub Total:</p>
-            <p className="mb-1">Rs. {Data.totalSeatsPrice}</p>
-          </div>
-          <div className="d-flex justify-content-between">
-            <p className="mb-1">+ Convenience fees:</p>
-            <p className="mb-1">Rs. {Data.convenienceFee}</p>
-          </div>
-          <hr />
-          {/* <div className="bg-light p-2">
+        </div>
+        {/* Right Section: Order Summary */}
+        <div className="card col-md-5 Order position-relative bg-light">
+          <div className="card-title mt-3 mx-3 text-uppercase text-secondary">Order Summary</div>
+          <div className="card-body">
+            <p className="d-flex justify-content-between align-items-center mb-1">
+              <strong>{Data.movieTitle} ({Data.selectedLanguage}) ({Data.certification})</strong>&nbsp;
+              <span className="badge bg-secondary text-white">{Data.selectedSeats.length} {Data.selectedSeats.length > 1 ? "Tickets" : "Ticket"}</span>
+            </p>
+            <p className="text-muted mb-1">{Data.selectedLanguage}, {Data.selectedFormat}</p>
+            <p className="text-muted mb-1">{Data.theaterName}: {Data.theaterLocation} ({Data.screenName})</p>
+            {Object.entries(groupedSeats).map(([category, seats], index) => {
+              if (seats.length > 0) {
+                return (<p className="text-muted mb-1" key={index}>
+                  {category.charAt(0).toUpperCase() + category.slice(1)} - {seats.join(", ")}</p>);
+              } return null;
+            })}
+            <div className="d-flex justify-content-between">
+            <p className="text-muted">{formattedDate} </p >
+            <p className="text-muted">{Data.selectedShowtime} </p>
+            </div>
+            <hr style={{border:"1px dashed gray"}}/>
+            <div className="d-flex justify-content-between">
+              <p className="mb-1">Sub Total:</p>
+              <p className="mb-1">Rs. {Data.totalSeatsPrice}</p>
+            </div>
+            <div className="d-flex justify-content-between">
+              <p className="mb-1">Convenience fees:</p>
+              <p className="mb-1">Rs. {Data.convenienceFee}</p>
+            </div>
+            <hr style={{border:"1px dashed gray"}}/>
+            {/* <div className="bg-light p-2">
             <div className="d-flex justify-content-between align-items-center">
               <label><input type="checkbox" className="form-check-input me-2" />Donate to BookAChange</label>
               <span>Rs. 0</span>
@@ -204,13 +210,19 @@ function  Payment () {
             <p className="text-primary small mb-0"><a href="">View T&C</a></p>
           </div>
           <hr /> */}
-          <div className="d-flex justify-content-between align-items-center">
-            <p className="mb-0"><small>Amount Payable:</small></p>
-            <p className="mb-0 text-muted"><strong>Rs. {Data.totalAmount}</strong></p>
+            <div className="d-flex justify-content-between align-items-center">
+              <p className="mb-0"><strong>Amount Payable:</strong></p>
+              <p className="mb-0 text-muted"><strong>Rs. {Data.totalAmount}</strong></p>
+            </div>
           </div>
         </div>
-      </div>
     </div>      
+    <style>
+      { `.Order::before, .Order::after {content: '';position: absolute;width: 20px;height: 20px;background-color: white;border-radius: 50%;border: 1px solid #ccc;top: 62%; transform: translateY(-50%);}
+        .Order::before { left: -5px; border-left: 1px solid white; }
+        .Order::after { right: -5px; border-right: 1px solid white; }
+      `}
+    </style>
     <ToastContainer />
   </div>
 );

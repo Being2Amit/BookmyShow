@@ -63,7 +63,7 @@ function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container d-flex justify-content-between align-items-center">
         <Link to="/" className="navbar-brand">
-          <img src='/logo.png' alt="BookMyShow Logo" style={{ width: "100px", height: "40px" }} />
+          <img src='/MovieHive.png' alt="BookMyShow Logo" style={{ width: "100px", height: "60px" }} />
         </Link>
         <form className="d-flex my-2 position-relative" onSubmit={(e) => { e.preventDefault(); handleSearch(); }} style={{ flexGrow: 1 }}>
           <input className="form-control" style={{ width: '415px' }} type="search"
@@ -79,7 +79,7 @@ function Navbar() {
               ) : (suggestions.slice(0, 5).map((suggestion) => (
                 <li key={suggestion.id} className="list-group-item" onClick={() => {
                   setSearchQuery(suggestion.title);
-                  navigate(`/movies?query=${suggestion.title}`);
+                  navigate(`/movies?query=${suggestion.title}`);  
                   setSuggestions([]);
                 }}>
                   {suggestion.title}
@@ -114,14 +114,7 @@ function Navbar() {
           </div>
         </div>
       </div>
-      <LocationModal
-        showModal={showModal}
-        location={location}
-        otherCities={otherCities}
-        selectedCity={city}
-        handleCitySelect={handleCitySelect}
-        modalRef={modalRef}
-      />
+      <LocationModal showModal={showModal} location={location} otherCities={otherCities} selectedCity={city} handleCitySelect={handleCitySelect} modalRef={modalRef} />
     </nav>
   );
 }
