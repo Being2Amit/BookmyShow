@@ -77,6 +77,8 @@ function MovieShow() {
     // Create a Date object for the selected showtime
     const showtime = new Date(selectedDate);
     showtime.setHours(convertedHours, minutes, 0, 0);
+    console.log(selectedShowtime);
+    
     // Current date and time
     const currentDate = new Date();const currentTime = new Date();
     // Ensure the selected date is not earlier than the current date
@@ -119,9 +121,7 @@ function MovieShow() {
       movieTitle,certification,selectedDate,selectedShowtime,seats,category,selectedLanguage,selectedFormat},
     });
   };
-
-
-  
+ 
   return (
     <>
       <div className="rounded shadow bg-white">

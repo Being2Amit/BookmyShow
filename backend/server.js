@@ -194,7 +194,7 @@ app.put('/changepass', authenticateToken, (req, res) => {
 // POST endpoint to handle booking requests
 app.post('/book', authenticateToken, (req, res) => {
   // Extract booking details from the request body
-  const { movieTitle,theater,Location, screen, selectedSeats, selectedDate, selectedShowtime, totalSeatsPrice, convenienceFee, totalAmount, paymentId } = req.body; 
+  const { movieTitle, theater, Location, screen, selectedSeats, selectedDate, selectedShowtime, totalSeatsPrice, convenienceFee, totalAmount, paymentId } = req.body; 
   const userId = req.user.id; // Extract the logged-in user's ID from the JWT token
 
   // Validate that all required fields are provided
@@ -206,54 +206,82 @@ app.post('/book', authenticateToken, (req, res) => {
   const cleanedPaymentId = paymentId.startsWith('pay_') ? paymentId.slice(4) : paymentId;
   const generatedPaymentId = cleanedPaymentId || generatePaymentId(); // Generate a unique payment ID if none provided
 
+  // Convert the selected showtime to 24-hour format
+  const convertTo24HourFormat = (time) => {
+    const [hours, minutes] = time.split(':');
+    const period = minutes.slice(-2); // AM/PM indicator
+    let hour24 = parseInt(hours, 10);
+
+    if (period === 'PM' && hour24 !== 12) {
+      hour24 += 12; // Convert PM hour to 24-hour format
+    } else if (period === 'AM' && hour24 === 12) {
+      hour24 = 0; // Midnight case
+    }
+
+    return `${String(hour24).padStart(2, '0')}:${minutes.slice(0, -2)}`; // Return in HH:mm format
+  };
+
+  const formattedShowtime = convertTo24HourFormat(selectedShowtime);
+
   // Generate a unique booking ID using the current timestamp and a random number
   const bookingId = `BMS-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
   // SQL query to insert booking data into the database
-  const insertBookingQuery = `INSERT INTO booking (bookingId, userId, movieTitle,theater,Location, screen, selectedSeats, selectedDate, selectedShowtime, totalSeatsPrice, convenienceFee, totalAmount, paymentId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const insertBookingQuery = `INSERT INTO booking (bookingId, userId, movieTitle, theater, Location, screen, selectedSeats, selectedDate, selectedShowtime, totalSeatsPrice, convenienceFee, totalAmount, paymentId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   // Prepare the booking data for insertion // Convert selected seats array to a JSON string
-  const bookingData = [ bookingId, userId,movieTitle,theater,Location,screen,JSON.stringify(selectedSeats), selectedDate,selectedShowtime,
-    totalSeatsPrice,convenienceFee,totalAmount,generatedPaymentId,];
+  const bookingData = [ bookingId, userId, movieTitle, theater, Location, screen, JSON.stringify(selectedSeats), selectedDate, formattedShowtime,
+    totalSeatsPrice, convenienceFee, totalAmount, generatedPaymentId,
+  ];
+
   // Execute the query to insert booking data
   server.query(insertBookingQuery, bookingData, (error, results) => {
-    if (error) {// Log the error for debugging
-      //console.error('Error inserting booking:', error.message); 
-      // Return a server error response
+    if (error) {
+      console.error('Error inserting booking:', error.message); 
       return res.status(500).json({ message: 'Failed to save booking', error: error.message }); 
-    }// Return a success response with the booking and payment details
-    res.status(201).json({message: 'Booking saved successfully',bookingId,paymentId: generatedPaymentId});
+    }
+
+    res.status(201).json({ message: 'Booking saved successfully', bookingId, paymentId: generatedPaymentId });
   });
 });
 
+
 app.get('/bookings', authenticateToken, (req, res) => {
   const userId = req.user.id; // Extract the logged-in user's ID from the JWT token
-  
   // SQL query to get all bookings for the logged-in user
   const getAllBookingsQuery = `SELECT * FROM booking WHERE userId = ?`;
-
   // Execute the query to fetch all the booking data
   server.query(getAllBookingsQuery, [userId], (error, results) => {
     if (error) {
       // Return a server error response
       return res.status(500).json({ message: 'Failed to retrieve bookings', error: error.message });
     }
-
     // If no bookings are found, return a message indicating that
     if (results.length === 0) {
       return res.status(404).json({ message: 'No bookings found' });
     }
-
-    // Optionally, parse the selectedSeats JSON string for each booking
+    // Optionally, parse the selectedSeats JSON string for each booking and format the showtime to 12-hour format
     const bookings = results.map(booking => {
       booking.selectedSeats = JSON.parse(booking.selectedSeats);
+      booking.selectedShowtime = formatShowtime(booking.selectedShowtime);
       return booking;
     });
-
     // Return all the bookings data
     res.status(200).json({ message: 'Bookings retrieved successfully', bookings });
   });
 });
+
+// Helper function to format 24-hour time to 12-hour format
+const formatShowtime = (time) => {
+  const [hour, minute] = time.split(':');
+  const parsedHour = parseInt(hour, 10);
+  const isAM = parsedHour < 12;
+  const formattedHour = parsedHour % 12 === 0 ? 12 : parsedHour % 12;
+  const formattedMinute = minute.length === 1 ? `0${minute}` : minute;
+  const meridian = isAM ? 'AM' : 'PM';
+  return `${formattedHour < 10 ? `0${formattedHour}` : formattedHour}:${formattedMinute} ${meridian}`;
+};
+
 
 
 

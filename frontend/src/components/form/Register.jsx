@@ -114,7 +114,7 @@ function Register() {
       {errors.confirmpwd && <div className="form-text text-danger">{errors.confirmpwd}</div>}
 
       <div className='text-center'>
-        <button type="submit" className=" btn btn-primary">Submit</button>
+        <button type="submit" className=" btn btn-danger">Submit</button>
         <p className="p-2">Already have an account? <Link to="/login" className="text-decoration-none">Login.</Link></p>
 
         {showMessage && <div className="alert alert-success mt-3">Registration successful! Redirecting to login</div>}
