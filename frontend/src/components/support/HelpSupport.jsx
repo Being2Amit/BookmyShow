@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 function HelpSupport() {
   return (
-    <div className="container-fluid p-5">
+    <div className="p-3 vh-100">
       <h4>Settings</h4>
       <ul className="list-group">
         <li className="list-group-item ">

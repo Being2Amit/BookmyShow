@@ -1,7 +1,7 @@
 import { createContext, useState } from 'react';
 export const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
-  const [city, setCity] = useState("Location");
+  const [city, setCity] = useState("Select Location");
   const handleChange = (newCity) => {setCity(newCity);};
   return (
     <AppContext.Provider value={{ city, handleChange, location ,otherCities }}>

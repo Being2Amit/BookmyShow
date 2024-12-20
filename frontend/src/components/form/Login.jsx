@@ -41,18 +41,12 @@ function Login() {
   };
 
   return (
-    <form className="card w-25 text-center m-auto my-5 shadow p-3 bg-dark text-light" onSubmit={handleSubmit}>
+    <form className="w-25 text-center m-auto my-5 shadow p-3" onSubmit={handleSubmit}>
       <h1 className="fs-2 text-center mb-3">Login</h1>
-      <input type="text" className="form-control border-outline-none mb-3" name="mobile" placeholder="Enter your Mobile/Email" 
-        style={{outline: 'none', boxShadow: 'none', border: '1px solid #ced4da',}} value={mobile} onChange={handleChange}
-      />
-      <input type="password" className="form-control border-outline-none mb-3" name="password" placeholder="Enter your password" 
-         style={{outline: 'none', boxShadow: 'none', border: '1px solid #ced4da',}}value={password} onChange={handleChange}
-      />
-      <div className="login"> 
-        <button type="submit" className=" btn btn-success" disabled={isLoading}>{isLoading ? 'Logging in...' : 'Login'}</button>
-        {error && <p className="text-danger mt-3">{error}</p>}
-      </div>
+      <input type="text" className="form-control border-outline-none mb-3" name="mobile" placeholder="Enter your Mobile/Email" value={mobile} onChange={handleChange}/>
+      <input type="password" className="form-control border-outline-none mb-3" name="password" placeholder="Enter your password" value={password} onChange={handleChange}/>
+      <button type="submit" className="btn btn-success"disabled={isLoading}>{isLoading ? 'Logging in...' : 'Login'}</button>
+      {error && <p className="text-danger mt-3">{error}</p>}
       <div className="mt-2">
         <p className='col-12 text-center'>Forgot password ?<Link to="/forgot" className="text-decoration-none">&nbsp;Reset</Link></p>
         <p className="col-12">Don't have an account?<Link to="/register" className="text-decoration-none">&nbsp;Sign up</Link></p>

@@ -17,10 +17,10 @@ function Profile() {
   };
 
   return (
-    <div className="container-fluid vh-100 d-flex flex-column ">
+    <div className="container-fluid vh-100 d-flex flex-column">
       <div className="row flex-grow-1">
         {/* Left Side Navigation */}
-        <div className="col-md-2 bg-light border-end p-0 m-0">
+        <div className="col-md-3 bg-light border-end p-0">
           <div className="list-group list-group-flush">
             <NavLink to="details" className={({ isActive }) => `list-group-item list-group-item-action d-flex align-items-center 
               ${isActive ? "active" : ""}`}><i className="bi bi-person-circle me-2 fs-3"></i> My Profile
@@ -46,7 +46,7 @@ function Profile() {
           </div>
         </div>
         {/* Right Side Content */}
-        <div className="col-md-10 p-0">
+        <div className="col-md-9 p-0">
           <div className="h-100 shadow-sm">
             <div className="card-body">
               <Outlet /> {/* Nested routes will render here */}

@@ -58,16 +58,16 @@ function Footer() {
               <div className="mb-3" >
                 <div className="mb-2 font-bold font-sans" style={{ color: '#A5A5A5', fontSize: '12px' }} >UPCOMMING MOVIES IN HYDERABAD</div>
                 <div className="anchors-con ">
-                  <Link to="/movies/1239511" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Lucky Baskhar</Link>
-                  <Link to="/movies/927342" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Amaran</Link>
-                  <Link to="/movies/1353436" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >KA (2024)</Link>
-                  <Link to="/movies/980599" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Bhool Bhulaiyaa 3</Link>
-                  <Link to="/movies/912649" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Venom: The Last Dance</Link>
-                  <Link to="/movies/1014214" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Singham Again</Link>
-                  <Link to="/movies/777292" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Bagheera</Link>
-                  <Link to="/movies/811941" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Devara - Part 1</Link>
-                  <Link to="/movies/1391064" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Dhaaak</Link>
-                  <Link to="/movies/1184918" className="mb-1 mr-1 pr-1 text-decoration-none"style={{color: '#A5A5A5'}} >The Wild Robot</Link>
+                  <Link to="/movies/lucky-baskhar-telugu/ET00386124" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Lucky Baskhar</Link>
+                  <Link to="/movies/amaran-telugu/ET00417203" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Amaran</Link>
+                  <Link to="/movies/singham-again/ET00354858" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Singham Again</Link>
+                  <Link to="/movies/ka-2024/ET00405181" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >KA (2024)</Link>
+                  <Link to="/movies/bhool-bhulaiyaa-3/ET00353996" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Bhool Bhulaiyaa 3</Link>
+                  <Link to="/movies/venom-the-last-dance-3d/ET00413299" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Venom: The Last Dance</Link>
+                  <Link to="/movies/bagheera-telugu/ET00417585" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Bagheera</Link>
+                  <Link to="/movies/devara-part-1/ET00310216" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Devara - Part 1</Link>
+                  <Link to="/movies/dhaaak/ET00407903" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Dhaaak</Link>
+                  <Link to="/movies/the-wild-robot/ET00398665" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5'}} >The Wild Robot</Link>
                 </div>
               </div>
 
@@ -75,16 +75,16 @@ function Footer() {
               <div className="mb-3" >
                 <div className="mb-2 font-bold font-sans" style={{ color: '#A5A5A5', fontSize: '12px' }} >MOVIES BY GENRE</div>
                 <div className="anchors-con ">
-                  <Link to="/movies/1239511" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Lucky Baskhar</Link>
-                  <Link to="/movies/927342" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Amaran</Link>
-                  <Link to="/movies/1353436" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >KA (2024)</Link>
-                  <Link to="/movies/980599" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Bhool Bhulaiyaa 3</Link>
-                  <Link to="/movies/912649" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Venom: The Last Dance</Link>
-                  <Link to="/movies/1014214" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Singham Again</Link>
-                  <Link to="/movies/777292" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Bagheera</Link>
-                  <Link to="/movies/811941" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Devara - Part 1</Link>
-                  <Link to="/movies/1391064" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Dhaaak</Link>
-                  <Link to="/movies/1184918" className="mb-1 mr-1 pr-1 text-decoration-none"style={{color: '#A5A5A5'}} >The Wild Robot</Link>
+                  <Link to="/movies/lucky-baskhar-telugu/ET00386124" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Lucky Baskhar</Link>
+                  <Link to="/movies/amaran-telugu/ET00417203" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Amaran</Link>
+                  <Link to="/movies/singham-again/ET00354858" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Singham Again</Link>
+                  <Link to="/movies/ka-2024/ET00405181" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >KA (2024)</Link>
+                  <Link to="/movies/bhool-bhulaiyaa-3/ET00353996" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Bhool Bhulaiyaa 3</Link>
+                  <Link to="/movies/venom-the-last-dance-3d/ET00413299" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Venom: The Last Dance</Link>
+                  <Link to="/movies/bagheera-telugu/ET00417585" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Bagheera</Link>
+                  <Link to="/movies/devara-part-1/ET00310216" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Devara - Part 1</Link>
+                  <Link to="/movies/dhaaak/ET00407903" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Dhaaak</Link>
+                  <Link to="/movies/the-wild-robot/ET00398665" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5'}} >The Wild Robot</Link>
                 </div>
               </div>
             </div>

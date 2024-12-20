@@ -23,7 +23,7 @@ function SeatsModal({ show, onClose,onConfirm,selectedDate}) {
       <Modal.Body>
         {/* Scooter Icon */}
         <div className="d-flex justify-content-center mb-4">
-          <img src="https://img.freepik.com/premium-vector/vintage-scooter-vector-illustration-cartoon-style_938798-604.jpg" alt="Scooter"style={{ width: "80px", height: "auto" }}/>
+          <img src="https://img.freepik.com/premium-vector/vintage-scooter-vector-illustration-cartoon-style_938798-604.jpg"alt="Scooter"style={{ width: "80px", height: "auto" }}/>
         </div>
         {/* Seat Count Buttons */}
         <div className="d-flex justify-content-center mb-4">
