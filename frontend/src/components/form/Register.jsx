@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from "react-toastify";
 
 function Register() {
   const navigate = useNavigate();
@@ -62,66 +63,79 @@ function Register() {
       if (error) acc[key] = error; // Collect errors
       return acc;
     }, {});
-    
+
     if (Object.keys(newErrors).length > 0) {// If there are validation errors, set errors and stop submission
       setErrors(newErrors);
       return;
     }
     axios.post('http://localhost:5000/register', data)// Proceed with server-side registration
       .then(() => {
-        setShowMessage(true); // Show success message
+        toast.success("Registration successful! Redirecting to login...", { autoClose: 2000 });
         setTimeout(() => navigate('/login'), 2000); // Redirect to login after 2 seconds
       })
-      .catch(err => setErrors({ submit: err.response?.data || 'Registration failed. Try again later.' })
-    );
+      .catch(err => {const errorMessage = err.response?.data || 'Registration failed. Try again later.';
+        toast.error(errorMessage, { autoClose: 3000 });
+      });
     setData({ fullname: '', mobile: '', email: '', password: '', confirmpwd: '' });// Clear form data after submission
     setErrors({});
   };
   return (
-    <form className="m-auto my-5 shadow p-3" onSubmit={handleSubmit} style={{ width: '40%' }}>
-      <h1 className="fs-2 text-center">Register Here</h1>
-      <div className='d-flex'>
-        <label className="w-50">Full Name<span className="text-danger">*&nbsp;</span></label>
-        <input className="form-control mb-3" name="fullname" type="text" placeholder="Enter your Full Name" value={fullname} onChange={handleChange} />
-      </div>
-      {errors.fullname && <div className="form-text text-danger">{errors.fullname}</div>}
+    <>
+      <form className="card m-auto my-5 shadow p-3  bg-dark text-light" onSubmit={handleSubmit} style={{ width: '40%' }}>
+        <h1 className="fs-2 text-center">Register Here</h1>
+        <div className='d-flex'>
+          <label className="w-50">Full Name<span className="text-danger">*&nbsp;</span></label>
+          <input className="form-control mb-3" name="fullname" type="text" placeholder="Enter your Full Name" value={fullname} onChange={handleChange}
+            style={{ outline: 'none', boxShadow: 'none', border: '1px solid #ced4da', }} required
+          />
+        </div>
+        {errors.fullname && <div className="form-text text-danger">{errors.fullname}</div>}
 
-      {/* <input className="form-control mb-3" name="user_name" type="text" placeholder="Username" value={user_name} onChange={handleChange} />
+        {/* <input className="form-control mb-3" name="user_name" type="text" placeholder="Username" value={user_name} onChange={handleChange} 
+        style={{outline: 'none', boxShadow: 'none', border: '1px solid #ced4da',}}  required
+      />
       {errors.user_name && <div className="form-text text-danger">{errors.user_name}</div>} */}
 
-      <div className='d-flex'>
-        <label className="w-50">Mobile Number<span className="text-danger">*&nbsp;</span></label>
-        <input className="form-control mb-3" name="mobile" type="tel" placeholder="Enter your Mobile number" value={mobile} onChange={handleChange} />
-      </div>
-      {errors.mobile && <div className="form-text text-danger">{errors.mobile}</div>}
+        <div className='d-flex'>
+          <label className="w-50">Mobile Number<span className="text-danger">*&nbsp;</span></label>
+          <input className="form-control mb-3" name="mobile" type="tel" placeholder="Enter your Mobile number" value={mobile} onChange={handleChange}
+            style={{ outline: 'none', boxShadow: 'none', border: '1px solid #ced4da', }} required
+          />
+        </div>
+        {errors.mobile && <div className="form-text text-danger">{errors.mobile}</div>}
 
-      <div className='d-flex'>
-        <label className="w-50">Email<span className="text-danger">*&nbsp;</span></label>
-        <input className="form-control mb-3" name="email" type="email" placeholder="Enter your email" value={email} onChange={handleChange} />
-      </div>
-      {errors.email && <div className="form-text text-danger">{errors.email}</div>}
+        <div className='d-flex'>
+          <label className="w-50">Email<span className="text-danger">*&nbsp;</span></label>
+          <input className="form-control mb-3" name="email" type="email" placeholder="Enter your email" value={email} onChange={handleChange}
+            style={{ outline: 'none', boxShadow: 'none', border: '1px solid #ced4da', }} required
+          />
+        </div>
+        {errors.email && <div className="form-text text-danger">{errors.email}</div>}
 
-      <div className='d-flex'>
-        <label className="w-50">Password<span className="text-danger">*&nbsp;</span></label>
-        <input className="form-control mb-3" name="password" type="password" placeholder="Enter your password" value={password} onChange={handleChange} />
-      </div>
-      {errors.password && <div className="form-text text-danger">{errors.password}</div>}
+        <div className='d-flex'>
+          <label className="w-50">Password<span className="text-danger">*&nbsp;</span></label>
+          <input className="form-control mb-3" name="password" type="password" placeholder="Enter your password" value={password} onChange={handleChange}
+            style={{ outline: 'none', boxShadow: 'none', border: '1px solid #ced4da', }} required
+          />
+        </div>
+        {errors.password && <div className="form-text text-danger">{errors.password}</div>}
 
-      <div className='d-flex'>
-        <label className="w-50">Confirm Password<span className="text-danger">*&nbsp;</span></label>
-        <input className="form-control mb-3" name="confirmpwd" type="password" placeholder="Confirm your password" value={confirmpwd} onChange={handleChange} />
-      </div>
-      {errors.confirmpwd && <div className="form-text text-danger">{errors.confirmpwd}</div>}
+        <div className='d-flex'>
+          <label className="w-50">Confirm Password<span className="text-danger">*&nbsp;</span></label>
+          <input className="form-control mb-3" name="confirmpwd" type="password" placeholder="Confirm your password" value={confirmpwd} onChange={handleChange}
+            style={{ outline: 'none', boxShadow: 'none', border: '1px solid #ced4da', }} required
+          />
+        </div>
+        {errors.confirmpwd && <div className="form-text text-danger">{errors.confirmpwd}</div>}
 
-      <div className='text-center'>
-        <button type="submit" className=" btn btn-primary">Submit</button>
-        <p className="p-2">Already have an account? <Link to="/login" className="text-decoration-none">Login.</Link></p>
-
-        {showMessage && <div className="alert alert-success mt-3">Registration successful! Redirecting to login</div>}
-        {errors.submit && <div className="text-danger mt-3">{errors.submit}</div>}
-      </div>
-
-    </form>
+        <div className='text-center'>
+          <button type="submit" className=" btn btn-success">Submit</button>
+          <p className="p-2">Already have an account? <Link to="/login" className="text-decoration-none">Login.</Link></p>
+          
+        </div>
+      </form>
+      <ToastContainer />
+    </>
   );
 }
 

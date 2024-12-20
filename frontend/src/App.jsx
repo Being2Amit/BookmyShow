@@ -1,8 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar";
 import Login from "./components/form/Login";
-import Register from "./components/form/Register";3
-import Forgot from './components/forgot/Forgot';
+import Register from "./components/form/Register";
 import Profile from "./components/profile/Profile";
 import PersonalDetails from "./components/details/Account";
 import BookingHistory from "./components/bookingHistory/BookingHistory";
@@ -26,7 +25,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/forgot" element={<Forgot />} />
+        
         <Route path="/movies" element={<Movies />} />
         <Route path="/stream" element={<Stream />} />
         <Route path="/movies/:id" element={<MovieDetails />} />

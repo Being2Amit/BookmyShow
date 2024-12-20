@@ -57,7 +57,7 @@ function BookingModal({ show, onClose, movieId }) {
               <h5>Languages:</h5>
               <div className="d-flex flex-wrap">
                 {languages.map((lang, index) => (
-                  <button key={index} className={`btn mx-1 mb-2 ${lang === selectedLanguage ? "btn-success" : "btn-secondary"}`}onClick={() => handleLanguageSelect(lang)}>
+                  <button key={index} className={`btn mx-1 mb-2 ${lang === selectedLanguage ? "btn-success" : "btn-danger"}`}onClick={() => handleLanguageSelect(lang)}>
                     {lang}
                   </button>
                 ))}
@@ -67,7 +67,7 @@ function BookingModal({ show, onClose, movieId }) {
               <h5>Formats:</h5>
               <div className="d-flex flex-wrap">
                 {formats.map((format, index) => (
-                  <button key={index} className={`btn mx-1 mb-2 ${format === selectedFormat ? "btn-success" : "btn-secondary"}`} onClick={() => handleFormatSelect(format)}>
+                  <button key={index} className={`btn mx-1 mb-2 ${format === selectedFormat ? "btn-success" : "btn-danger"}`} onClick={() => handleFormatSelect(format)}>
                     {format}
                   </button>
                 ))}

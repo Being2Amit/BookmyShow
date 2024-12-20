@@ -31,8 +31,18 @@ const SeatBooking = () => {
   };
   const formattedDate = selectedDate ? getDateLabel(selectedDate) : "";
   const initialSeatsConfig = {
-    N: [1, 19, [10, 12]], M: [1, 19, []], L: [1, 19, [1]], K: [1, 19, []], J: [1, 19, []], I: [1, 19, [10, 14, 12]], H: [1, 19, []],
-    G: [1, 19, []], F: [1, 19, []], E: [1, 19, [8, 9, 10, 11, 12]], D: [1, 19, []], C: [1, 19, []], B: [1, 19, []], A: [1, 19, [1]],
+    N: [1, 19, [10, 12]], 
+    M: [1, 19, []], 
+    L: [1, 19, [1]], 
+    K: [1, 19, []], 
+    J: [1, 19, []], 
+    I: [1, 19, [10, 14, 12]], 
+    H: [1, 19, []],
+    G: [1, 19, []], 
+    F: [1, 19, []], 
+    E: [1, 19, [8, 9, 10, 11, 12]], 
+    D: [1, 19, []], 
+    C: [1, 19, []], B: [1, 19, []], A: [1, 19, [1]],
   };
   const toggleSeatSelection = (row, seatNumber) => {
     const seatId = `${row}${seatNumber}`; // Create a unique seat ID (e.g., "A1")
@@ -144,7 +154,7 @@ const SeatBooking = () => {
             </div>
           ))}
           {/* Screen Indicator */}
-          <div className="screen-icon-container text-center mt-2 mb-5">
+          <div className="screen-icon-container text-center mt-5 mb-5">
             <div className="screen-icon mx-auto border-outline-black"></div>
             <p className="text-muted mb-5">All eyes this way please!</p>
           </div>
@@ -175,7 +185,8 @@ const SeatBooking = () => {
         .btn-success {background-color: #19a745;color: white;}
         .btn-outline-disabled {border: 1px solid #6c757d;}
         .screen-icon-container {display: flex;flex-direction: column;align-items: center;}
-        .screen-icon {width: 80%; max-width: 600px; height: 70px; background: linear-gradient(to bottom,#5E90AF,#87CEFA,#5E90AF);border-radius: 50% / 5px;transform: perspective(400px) rotateX(60deg);box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.6);}
+        .screen-icon { width: 80%; max-width: 600px; height: 70px; border-radius: 6px; border: 1px solid #d0e8ff;background: linear-gradient(to bottom, #e0f0ff, #c0e0ff);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6), -2px -2px 2px rgba(255, 255, 255, 0.8) inset,0 2px 4px rgba(0, 0, 0, 0.1) inset; transform: perspective(400px) rotateX(50deg);}
         .btn:disabled {cursor: not-allowed;background-color: gray; color: white;border-color: #dcdcdc;}
         .status-box {padding: 6px 9px; font-size: 14px; font-weight: bold; text-transform: uppercase; display: inline-block; margin: 0 5px; border-radius: 3px; }
         .available { background-color: white; border: 2px solid #19a745;color: white}

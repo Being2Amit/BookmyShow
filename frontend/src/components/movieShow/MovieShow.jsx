@@ -69,9 +69,32 @@ function MovieShow() {
 
   // Handle when a user clicks a showtime
   const handleShowtimeClick = (time) => {
+    // Parse time in "hh:mm AM/PM" format
+    const [timePart, meridiem] = time.split(" "); // Split into time and AM/PM
+    const [hours, minutes] = timePart.split(":").map(Number); // Extract hours and minutes
+    // Convert 12-hour clock to 24-hour clock
+    const convertedHours = meridiem === "PM" && hours !== 12 ? hours + 12 : meridiem === "AM" && hours === 12 ? 0 : hours;
+    // Create a Date object for the selected showtime
+    const showtime = new Date(selectedDate);
+    showtime.setHours(convertedHours, minutes, 0, 0);
+    console.log(selectedShowtime);
+    
+    // Current date and time
+    const currentDate = new Date();const currentTime = new Date();
+    // Ensure the selected date is not earlier than the current date
+    const isFutureDate = new Date(selectedDate).setHours(0, 0, 0, 0) >= currentDate.setHours(0, 0, 0, 0);
+    // Check if the showtime for the selected date has not already passed
+    const isTimeValid = isFutureDate ? showtime > currentTime : true;
+    // The showtime is valid if both the date and time conditions are satisfied
+    const isShowtimeValid = isFutureDate && isTimeValid;
+    if (!isShowtimeValid) {
+      toast.error("This showtime is no longer available.");
+      return; // Exit if the showtime is not valid
+    }
     setSelectedShowtime(time);
     setShowModal(true); // Open modal when showtime is clicked
   };
+  
   const handleTheaterSelect = (theater) => {
     setSelectedTheater(theater);
   };
@@ -98,8 +121,7 @@ function MovieShow() {
       movieTitle,certification,selectedDate,selectedShowtime,seats,category,selectedLanguage,selectedFormat},
     });
   };
-
-  
+ 
   return (
     <>
       <div className="rounded shadow bg-white">
