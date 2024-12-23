@@ -15,8 +15,7 @@ const BookingSummary = () => {
     setConvenienceFee(fee);
     setTotalAmount(total);
   }, [selectedSeats, ticketPrices]);
-
-  const handleProceed = () => {
+    const handleProceed = () => {
     // Prepare data to pass to the payment page
     const paymentData = { movieTitle, theaterName, theaterLocation, selectedDate, selectedShowtime,selectedSeats,
       screenName,selectedLanguage,selectedFormat,convenienceFee,certification,totalAmount,totalSeatsPrice,
@@ -24,8 +23,6 @@ const BookingSummary = () => {
     // Navigate to the payment page with the state
     navigate("/payment", { state: paymentData });
   };
-
-
   const formatDate = (date) => {const options = { day: "2-digit", month: "short" };
     return new Date(date).toLocaleDateString("en-US", options);
   };
@@ -35,7 +32,6 @@ const BookingSummary = () => {
     return inputDate.toDateString() === today.toDateString() 
     ? `Today, ${formatDate(date)}` : `${formatDate(date)}`;
   };
-
   const formattedDate = selectedDate ? getDateLabel(selectedDate) : "";
   // Function to calculate the seat price based on the row
   const getSeatPrice = (seat) => {
@@ -64,8 +60,6 @@ const BookingSummary = () => {
     }
     return "Unknown Screen"; // Fallback
   };
-
-
   const screenName = getScreenForShowtime(selectedShowtime);
   const calculateTotalPrice = () => {
     return selectedSeats.reduce((acc, seat) => acc + getSeatPrice(seat), 0);

@@ -22,7 +22,7 @@ function Movies() {
         }
       };
       fetchMovies();
-    } else {setSearchResults([]);}
+    } else { setSearchResults([]); }
   }, [query]); // Re-fetch if query changes
 
   return (
@@ -32,28 +32,18 @@ function Movies() {
         <p>Loading...</p>
       ) : (
         <div className="row text-center">
-          {searchResults.length > 0 ? (
-            searchResults.map((movie) => (
-              <div className="col-3 mb-3" key={movie.id}>
-                <div className="card " style={{width: '270px', height: '310px' }}>
+          {searchResults.length > 0 ? (searchResults.map((movie) => (
+            <div className="col-3 mb-3" key={movie.id}>
+              <Link to={`/movies/${movie.id}`} className="text-decoration-none">
+                <div className="card bg-dark" style={{ width: '250px', height: '250px' }}>
                   {/* Check if poster_path is available, if not use placeholder */}
-                  <img 
-                    className="card-img-top" 
-                    style={{ width: '100%', height: '220px' }} 
-                    src={movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : 'https://via.placeholder.com/200x300?text=No+Image'} 
-                    alt="poster" 
-                  />
-                  <div className="card-body bg-dark" style={{backgroundColor:''}}>
-                    <h6 className="text-light">{movie.title}</h6>
-                    {/* Updated the link to go to /movies/:id */}
-                    <Link to={`/movies/${movie.id}`} className="btn btn-primary">View Details</Link>
-                  </div>
+                  <img className="card-img-top" style={{ width: '100%', height: '220px' }} alt="poster"
+                    src={movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : 'https://via.placeholder.com/200x300?text=No+Image'} />
+                  <h6 className="text-light m-1">{movie.title}</h6>
                 </div>
-              </div>
-            ))
-          ) : (
-            <p>No results found for "{query}".</p>  
-          )}
+              </Link>
+            </div>
+          ))) : (<p>No results found for "{query}".</p>)}
         </div>
       )}
     </div>

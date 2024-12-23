@@ -28,6 +28,7 @@ function Login() {
       const res = await axios.post('http://localhost:5000/login', data);
       if (res.data.success) {
         localStorage.setItem('token', res.data.token);
+        console.log(res.data);
         setError('');
         login();
         navigate('/');
@@ -45,7 +46,7 @@ function Login() {
       <h1 className="fs-2 text-center mb-3">Login</h1>
       <input type="text" className="form-control border-outline-none mb-3" name="mobile" placeholder="Enter your Mobile/Email" value={mobile} onChange={handleChange}/>
       <input type="password" className="form-control border-outline-none mb-3" name="password" placeholder="Enter your password" value={password} onChange={handleChange}/>
-      <button type="submit" className="btn btn-success"disabled={isLoading}>{isLoading ? 'Logging in...' : 'Login'}</button>
+      <button type="submit" className="btn btn-danger"disabled={isLoading}>{isLoading ? 'Logging in...' : 'Login'}</button>
       {error && <p className="text-danger mt-3">{error}</p>}
       <div className="mt-2">
         <p className='col-12 text-center'>Forgot password ?<Link to="/forgot" className="text-decoration-none">&nbsp;Reset</Link></p>

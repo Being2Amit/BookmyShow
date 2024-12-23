@@ -5,9 +5,9 @@ function Foot () {
         <div className="row">
           {/* About Section */}
           <div className="w-40 col-md-4">
-            <h5>About BookMyShow</h5>
+            <h5>About MovieHive</h5>
             <p className="text-secondary">
-              BookMyShow is a leading entertainment ticketing platform that provides access to movies, events, and experiences. Enjoy the best of entertainment with easy booking.
+              MovieHive is a leading entertainment ticketing platform that provides access to movies, events, and experiences. Enjoy the best of entertainment with easy booking.
             </p>
           </div>
 
@@ -40,7 +40,7 @@ function Foot () {
 
         {/* Copyright */}
         <div className="text-center">
-          <p className="mb-0">&copy; {new Date().getFullYear()} BookMyShow. All Rights Reserved.</p>
+          <p className="mb-0">&copy; {new Date().getFullYear()} MovieHive. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

@@ -1,40 +1,48 @@
 import { useState, useEffect } from "react";
 import getMovies from "../../api/Api";
 import MovieCard from "../moviecard/MovieCard";
+import "./RecomendedMovies.css"; // Include custom CSS for hover effect
 
 function RecomendedMovies() {
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState(null);
+
   useEffect(() => {
     getMovies()
-      .then(res => {
-         // setMovies(res.data[0].films)
-        // console.log(res.data.results);
+      .then((res) => {
         setMovies(res.data.results);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Error fetching movies:", err.message || err);
         setError("Could not fetch recommended movies.");
-      })
+      });
   }, []);
 
   return (
-    <div className="movie me-5 m-5 " >
-      <h1 className="text-text-highlight text-2xl font-mono" >Recommend Movies</h1>
+    <div className="container my-5">
+      <h1 className="text-muted fs-3 mb-3">Recommend Movies</h1>
       {error ? (
-        <p className="text-red-500 mt-4">{error}</p>
+        <p className="text-danger mt-4">{error}</p>
       ) : (
-        <div className="d-flex flex-wrap gap-2 px-3 ">
-          {/* {movies.map((movie, i) => (<MovieCard key={i} movie={movie} />))} */}
+        <div className="row g-2 justify-content-center">
           {movies.length ? (
-            movies.map((movie, i) => <MovieCard key={i} movie={movie} />)
+            movies.map((movie, i) => (
+              <div
+                key={i}
+                className="col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
+              >
+                <div className="movie-card">
+                  <MovieCard movie={movie} />
+                </div>
+              </div>
+            ))
           ) : (
             <p>Loading...</p>
           )}
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export default RecomendedMovies
+export default RecomendedMovies;
