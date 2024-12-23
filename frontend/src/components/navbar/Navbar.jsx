@@ -62,7 +62,7 @@ function Navbar() {
       <div className="container d-flex justify-content-between align-items-center gap-x-2">
         {/* Logo */}
         <Link to="/" className="navbar-brand ms-2">
-          <img src="/public/assets/MovieHive.png" alt="MovieHive Logo" style={{ width: '100px', height: '50px' }}/>
+          <img src="/MovieHive.png" alt="MovieHive Logo" style={{ width: '100px', height: '50px' }}/>
         </Link>
         {/* Search Bar */}
         <form className="d-flex position-relative mt-2" style={{ width:'100%', minWidth:'100px',maxWidth: '415px' }}
