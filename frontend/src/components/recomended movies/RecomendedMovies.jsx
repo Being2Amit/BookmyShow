@@ -13,7 +13,7 @@ function RecomendedMovies() {
         setMovies(res.data.results);
       })
       .catch((err) => {
-        console.error("Error fetching movies:", err.message || err);
+        console.log("Error fetching movies:", err.message || err);
         setError("Could not fetch recommended movies.");
       });
   }, []);

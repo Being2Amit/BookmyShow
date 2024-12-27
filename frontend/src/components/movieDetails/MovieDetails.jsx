@@ -1,17 +1,22 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import BookingModal from '../bookingTicket/BookingTicket'; 
 import TrailerModal from '../trailer/Trailer'; // Import TrailerModal
+import RatingModal from "../rating/ratingModal";
 
 function MovieDetails() {
+  console.log(localStorage.getItem("token"));
+
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
   const [credits, setCredits] = useState(null);
   const [showBookingModal, setShowBookingModal] = useState(false);
+  const [showRatingModal, setShowRatingModal] = useState(false);
   const [showModal, setShowModal] = useState(false); // State for modal visibility
   const [setTrailers] = useState(null); // State to store trailer data
   const [certification, setCertification] = useState(null);
+  const token = localStorage.getItem("token")
 
   // Fetch movie details
   useEffect(() => {
@@ -85,12 +90,29 @@ function MovieDetails() {
       return map;
     }, new Map()).values()
   );
+
+  //allow to user ratting to movie
+
+  const handleRatting = () => {
+    if (token) {
+      setShowRatingModal(true); 
+    } else {
+      navigate("/login"); 
+    }
+  };
+  const handleCloseRatingModal = () => {
+    setShowRatingModal(false);
+  };
+
   // Function to handle the modal opening
   const handleShowModal = () => { setShowModal(true); };
   const handleCloseModal = () => { setShowModal(false); };
   const handleShowBookingModal = () => {setShowBookingModal(true);};
   const handleCloseBookingModal = () => {setShowBookingModal(false);
   };
+
+
+  
   return (
     <div className="movie" style={{ minHeight: '100vh' }}>
       <section className="mb-4" style={{ height: '480px' }}>
@@ -124,7 +146,7 @@ function MovieDetails() {
             <div className="text-white" style={{ maxWidth: '500px' }}>
               <h1 className="text-warning mb-3">{movieDetails.title}</h1>
               <div className="btn btn-dark mb-2"><i className="text-danger px-1 bi bi-star-fill"></i> <span className="px-1">{rating}</span><span className="px-1">({votes} votes){">"}</span>&nbsp;&nbsp;
-                <button className="btn btn-light mx-2 me-2">Rate now</button></div>
+                <button className="btn btn-light mx-2 me-2" onClick={handleRatting}>Rate now</button></div>
               <p className="mb-3">{formattedRuntime} • {genres} • {certification} • {formattedReleaseDate}</p>
               {(new Date(movieDetails.release_date) < new Date() &&
                (new Date() - new Date(movieDetails.release_date)) <= 60 * 24 * 60 * 60 * 1000) ||
@@ -173,6 +195,7 @@ function MovieDetails() {
       {/*Modal */}
       <TrailerModal show={showModal} onClose={handleCloseModal} movieId={id}/>
       <BookingModal show={showBookingModal} onClose={handleCloseBookingModal} movieId={id} />
+      <RatingModal show={showRatingModal} onClose={handleCloseRatingModal} movieId={id} />
     </div>
   );
 }
