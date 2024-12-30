@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
-function LogoutModal({ show, onHide, onConfirm }) {
+function LogoutModal({ show, onHide }) {
+  const navigate = useNavigate();
+
+  const handleConfirm = () => {
+    // Remove token from local storage
+    localStorage.removeItem('token');
+
+    // Perform additional actions after logout
+    navigate('/login'); // Redirect to login page
+    onHide(); // Close the modal
+  };
+
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
@@ -12,7 +24,7 @@ function LogoutModal({ show, onHide, onConfirm }) {
         <Button variant="secondary" onClick={onHide}>
           Cancel
         </Button>
-        <Button variant="danger" onClick={onConfirm}>
+        <Button variant="danger" onClick={handleConfirm}>
           Logout
         </Button>
       </Modal.Footer>

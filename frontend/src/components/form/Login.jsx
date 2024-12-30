@@ -7,7 +7,7 @@ function Login() {
   const navigate = useNavigate();
   const [data, setData] = useState({ mobile: '', password: '' }); // 'mobile' will store User_Name, email or phone number
   const [error, setError] = useState('');
-  const { mobile, password } = data;  // destructure mobile (either phone or email) and password
+  const { mobile, password } = data; // destructure mobile (either phone or email) and password
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,9 +33,13 @@ function Login() {
         login();
         navigate('/');
       } else {
+        // Clear token if login is unsuccessful
+        localStorage.removeItem('token');
         setError(res.data.message || 'Invalid credentials');
       }
     } catch (err) {
+      // Clear token in case of an error
+      localStorage.removeItem('token');
       setError('An error occurred. Please try again later.');
     }
     setIsLoading(false);
@@ -44,9 +48,25 @@ function Login() {
   return (
     <form className="w-25 text-center m-auto my-5 shadow p-3" onSubmit={handleSubmit}>
       <h1 className="fs-2 text-center mb-3">Login</h1>
-      <input type="text" className="form-control border-outline-none mb-3" name="mobile" placeholder="Enter your Mobile/Email" value={mobile} onChange={handleChange}/>
-      <input type="password" className="form-control border-outline-none mb-3" name="password" placeholder="Enter your password" value={password} onChange={handleChange}/>
-      <button type="submit" className="btn btn-danger"disabled={isLoading}>{isLoading ? 'Logging in...' : 'Login'}</button>
+      <input 
+        type="text" 
+        className="form-control border-outline-none mb-3" 
+        name="mobile" 
+        placeholder="Enter your Mobile/Email" 
+        value={mobile} 
+        onChange={handleChange}
+      />
+      <input 
+        type="password" 
+        className="form-control border-outline-none mb-3" 
+        name="password" 
+        placeholder="Enter your password" 
+        value={password} 
+        onChange={handleChange}
+      />
+      <button type="submit" className="btn btn-danger" disabled={isLoading}>
+        {isLoading ? 'Logging in...' : 'Login'}
+      </button>
       {error && <p className="text-danger mt-3">{error}</p>}
       <div className="mt-2">
         <p className='col-12 text-center'>Forgot password ?<Link to="/forgot" className="text-decoration-none">&nbsp;Reset</Link></p>
