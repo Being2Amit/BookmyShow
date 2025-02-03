@@ -118,15 +118,12 @@ function MovieShow() {
     
   };
 
-  // Handle when a user clicks a showtime
+  // Handle when a user clicks a showtime check selected date and showtime passed or not
   const handleShowtimeClick = (time) => {
     setSelectedShowtime(time);
-    // Create a Date object for the selected showtime
     const showtime = new Date(`${selectedDate} ${time}`);
-    console.log("Clicked selectedShowtime:",time);
     // Current date and time
     const currentDate = new Date(); const currentTime = new Date();
-    // Ensure the selected date is not earlier than the current date
     const isFutureDate = new Date(selectedDate).setHours(0, 0, 0, 0) >= currentDate.setHours(0, 0, 0, 0);
     // Check if the showtime for the selected date has not already passed
     const isTimeValid = isFutureDate ? showtime > currentTime : true;
