@@ -20,7 +20,7 @@ function MovieShow() {
   const [genres, setGenres] = useState([]);
   const dateRefs = useRef([]); 
   const scrollContainerRef = useRef(null); 
-  const [selectedShowtime, setSelectedShowtime] = useState(null);
+  const [selectedShowtime, setSelectedShowtime] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [selectedTheater, setSelectedTheater] = useState(null);
   const [Filters, setFilters] = useState({ morning: false, afternoon: false, evening: false, night: false, });
@@ -120,15 +120,10 @@ function MovieShow() {
 
   // Handle when a user clicks a showtime
   const handleShowtimeClick = (time) => {
-    // Parse time in "hh:mm AM/PM" format
-    const [timePart, meridiem] = time.split(" "); // Split into time and AM/PM
-    const [hours, minutes] = timePart.split(":").map(Number); // Extract hours and minutes
-    // Convert 12-hour clock to 24-hour clock
-    const convertedHours = meridiem === "PM" && hours !== 12 ? hours + 12 : meridiem === "AM" && hours === 12 ? 0 : hours;
+    setSelectedShowtime(time);
     // Create a Date object for the selected showtime
-    const showtime = new Date(selectedDate);
-    showtime.setHours(convertedHours, minutes, 0, 0);
-    console.log(selectedShowtime);
+    const showtime = new Date(`${selectedDate} ${time}`);
+    console.log("Clicked selectedShowtime:",time);
     // Current date and time
     const currentDate = new Date(); const currentTime = new Date();
     // Ensure the selected date is not earlier than the current date
@@ -140,7 +135,7 @@ function MovieShow() {
     if (!isShowtimeValid) {
       toast.warning("This showtime is no longer available.");
       return; // Exit if the showtime is not valid
-    } setSelectedShowtime(time); setShowModal(true); // Open modal when showtime is clicked
+    }setShowModal(true); // Open modal when showtime is clicked
   };
 
   const handleTheaterSelect = (theater) => { setSelectedTheater(theater); };

@@ -1,9 +1,8 @@
-import { useState, useEffect,useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useDispatch } from "react-redux"; // Import Redux Dispatch
 import Cookies from 'js-cookie';
 import { useAuth } from '../context/AuthContext';
 import LogoutModal from '../logout/Logout'; 
-import { toast } from 'react-toastify';
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { AppContext } from '../context/AppContext'; 
 
@@ -13,11 +12,6 @@ function Profile() {
   const { clearCity } = useContext(AppContext); 
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  
-  useEffect(() => {
-    toast.success("Profile loaded successfully");
-  }, []);
-
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });// Dispatch Redux action to clear the store
     logout(); // Call the AuthContext logout function
@@ -38,7 +32,7 @@ function Profile() {
               ${isActive ? "active" : ""}`}><i className="bi bi-person-circle me-2 fs-3"></i> My Profile
             </NavLink>
             <NavLink to="history" className={({ isActive }) => `list-group-item list-group-item-action d-flex align-items-center 
-              ${isActive ? "active" : ""}`}><i className="bi bi-film me-2 fs-3"></i> Order History
+              ${isActive ? "active" : ""}`}><i className="bi bi-film me-2 fs-3"></i> Booking History
             </NavLink>
             <NavLink to="favorites" className={({ isActive }) => `list-group-item list-group-item-action d-flex align-items-center 
               ${isActive ? "active" : ""}`}><i className="bi bi-star me-2 fs-3"></i> Favorite Genres

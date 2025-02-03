@@ -149,7 +149,7 @@ function BookingHistory() {
 
   return (
     <div className="container px-3 py-3">
-      <h2 className="mb-4">Booking</h2>
+      <h2 className="mb-4">Booking History:</h2>
       <div className="d-flex flex-grow-1 gap-2 mb-3">
         <button className={`btn ${activeTab === 'all' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => handleTabChange('all')}>All Bookings</button>
         <button className={`btn ${activeTab === 'previous' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => handleTabChange('previous')}>Previous Bookings</button>
