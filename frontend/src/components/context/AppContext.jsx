@@ -1,10 +1,20 @@
 import { createContext, useState } from 'react';
+import Cookies from 'js-cookie';
+
 export const AppContext = createContext();
+
 export const AppContextProvider = ({ children }) => {
-  const [city, setCity] = useState("Location");
-  const handleChange = (newCity) => {setCity(newCity);};
+  const [city, setCity] = useState(Cookies.get('city') || 'Location');
+  const handleChange = (newCity) => {
+    setCity(newCity);
+    Cookies.set('city', newCity, { expires: 7 }); 
+  };
+  const clearCity = () => {
+    setCity('Location'); // Set city to default value
+    Cookies.remove('city'); // Remove city cookie
+  };
   return (
-    <AppContext.Provider value={{ city, handleChange, location ,otherCities }}>
+    <AppContext.Provider value={{ city, handleChange, clearCity, location ,otherCities }}>
       {children}
     </AppContext.Provider>
   );

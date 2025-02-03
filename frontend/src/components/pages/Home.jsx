@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ToastContainer,toast  } from 'react-toastify';
 import Carousel from '../carousel/Carousel';
-import RecomendedMovies from '../recomended movies/RecomendedMovies';
+import LocationMovies from "../locationMovies/LocationMovies";
 import Footer from '../footer/Footer';
 
 function Home() {
@@ -13,7 +13,7 @@ function Home() {
   return (
     <div>
       <Carousel />
-      <RecomendedMovies />
+      <LocationMovies/>
       <Footer />
       <ToastContainer/>
     </div>

@@ -1,99 +1,92 @@
 import Foot from "./Foot";
+import React, { useEffect, useState } from "react";
 import { RiCustomerService2Line } from "react-icons/ri";
-import { ImPagebreak, ImTicket } from "react-icons/im";
+import { ImTicket } from "react-icons/im";
 import { SlEnvolopeLetter } from "react-icons/sl";
 import { Link } from "react-router-dom";
+
 function Footer() {
+  const [nowShowing, setNowShowing] = useState([]);
+  const [upcomingMovies, setUpcomingMovies] = useState([]);
+  const [genres, setGenres] = useState([]);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const nowShowingResponse = await fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=41c953dc7d1c21d27df7b693e9740a3c&region=IN`);
+        const nowShowingData = await nowShowingResponse.json();
+        setNowShowing(nowShowingData.results);
+        const upcomingResponse = await fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=41c953dc7d1c21d27df7b693e9740a3c&region=IN`);
+        const upcomingData = await upcomingResponse.json();
+        setUpcomingMovies(upcomingData.results);
+        const genreresponse = await fetch('https://api.themoviedb.org/3/genre/movie/list?api_key=41c953dc7d1c21d27df7b693e9740a3c&region=IN');
+        const genresData = await genreresponse.json();
+        setGenres(genresData.genres);
+      } catch (err) { setError("Failed to fetch data from TMDB API"); error(err.message); }
+    };
+    fetchMovies();
+  }, []);
+  const MovieLinks = (movies) => movies.slice(0, 15).map((movie, index) => (
+    <Link key={movie.id} to={`/movies/${movie.id}`} className="movies text-decoration-none text-secondary d-inline-block mb-2 pe-2 ms-2"
+      style={{ fontSize: "13px", borderRight: index !== 14 ? "1px solid #7f7f7f" : "none", }}
+    >{movie.title}</Link>
+  ));
   return (
-    <>
-      <footer>
-        <div className="w-full" style={{ backgroundColor: '#333338' }}>
-
-          <div style={{ backgroundColor: '#404043' }}>
-            <div className="mx-auto w-11/12 md:w-3/4">
-              {/* Services */}
-              <div className="flex justify-evenly gap-x-52 p-3">
-
-                {/* customer care */}
-                <a to="#" className="flex flex-col items-center text-decoration-none text-light w-20">
-                  <RiCustomerService2Line style={{ fontSize: '40px',color:'lightgray' }}/>
-                  <div className="text-center text-xs mt-3 whitespace-nowrap">24/7 CUSTOMER CARE</div>
-                </a>
-                {/* resend ticket  */}
-                <a to="#" className="flex flex-col items-center text-decoration-none text-light w-20">
-                  <ImTicket  style={{ fontSize: '40px',color:'lightgray'}}/>
-                  <div className="text-center text-xs mt-3 whitespace-nowrap">RESEND BOOKING CONFIRMATION</div>
-                </a>
-
-                {/* News Letter */}
-                <a to="#" className="flex flex-col items-center text-decoration-none text-light w-20">
-                  <SlEnvolopeLetter  style={{ fontSize: '40px',color:'lightgray', fontWeight: '100'}}/>
-                  <div className="text-center text-xs mt-3 whitespace-nowrap">SUBSCRIBE TO THE NEWSLETTER</div>
-                </a>
-              </div>
+    <footer className="text-light"style={{ backgroundColor: '#333338' }}>
+      {/* Services Section */}
+      <div style={{ backgroundColor: "#404043" }}>
+          <div className="mx-auto w-11/12 md:w-3/4">
+            {/* Services */}
+            <div className="flex flex-wrap justify-evenly gap-x-52 p-3">
+              {/* customer care */}
+              <Link to="#" className="flex flex-col items-center text-decoration-none text-light w-20">
+                <RiCustomerService2Line style={{ fontSize: "40px", color: "lightgray" }} />
+                <div className="text-center text-xs mt-3 whitespace-nowrap">24/7 CUSTOMER CARE</div>
+              </Link>
+              {/* resend ticket */}
+              <Link to="#" className="flex flex-col items-center text-decoration-none text-light w-20">
+                <ImTicket style={{ fontSize: "40px", color: "lightgray" }} />
+                <div className="text-center text-xs mt-3 whitespace-nowrap"> RESEND BOOKING CONFIRMATION </div>
+              </Link>
+              {/* News Letter */}
+              <Link to="#" className="flex flex-col items-center text-decoration-none text-light w-20">
+                <SlEnvolopeLetter style={{ fontSize: "40px", color: "lightgray", fontWeight: "100" }}/>
+                <div className="text-center text-xs mt-3 whitespace-nowrap"> SUBSCRIBE TO THE NEWSLETTER </div>
+              </Link>
             </div>
           </div>
-
-          <div className="w-full py-2 text-text-light" >
-            <div className="mx-auto px-3.5" style={{ width: '1200px' }} >
-
-              {/* movie-list-1 */}
-              <div className="mb-3" >
-                <div className="mb-2 font-bold font-sans" style={{ color: '#A5A5A5', fontSize: '12px' }} >MOVIES NOW SHOWING IN HYDERADAD</div>
-                <div className="anchors-con ">
-                  <Link to="/movies/1239511" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Lucky Baskhar</Link>
-                  <Link to="/movies/927342" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Amaran</Link>
-                  <Link to="/movies/1353436" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >KA (2024)</Link>
-                  <Link to="/movies/980599" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Bhool Bhulaiyaa 3</Link>
-                  <Link to="/movies/912649" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Venom: The Last Dance</Link>
-                  <Link to="/movies/1014214" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Singham Again</Link>
-                  <Link to="/movies/777292" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Bagheera</Link>
-                  <Link to="/movies/811941" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Devara - Part 1</Link>
-                  <Link to="/movies/1391064" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Dhaaak</Link>
-                  <Link to="/movies/1184918" className="mb-1 mr-1 pr-1 text-decoration-none"style={{color: '#A5A5A5'}} >The Wild Robot</Link>
-                </div>
-              </div>
-
-              {/* movie-list-2 */}
-              <div className="mb-3" >
-                <div className="mb-2 font-bold font-sans" style={{ color: '#A5A5A5', fontSize: '12px' }} >UPCOMMING MOVIES IN HYDERABAD</div>
-                <div className="anchors-con ">
-                  <Link to="/movies/lucky-baskhar-telugu/ET00386124" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Lucky Baskhar</Link>
-                  <Link to="/movies/amaran-telugu/ET00417203" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Amaran</Link>
-                  <Link to="/movies/singham-again/ET00354858" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Singham Again</Link>
-                  <Link to="/movies/ka-2024/ET00405181" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >KA (2024)</Link>
-                  <Link to="/movies/bhool-bhulaiyaa-3/ET00353996" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Bhool Bhulaiyaa 3</Link>
-                  <Link to="/movies/venom-the-last-dance-3d/ET00413299" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Venom: The Last Dance</Link>
-                  <Link to="/movies/bagheera-telugu/ET00417585" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Bagheera</Link>
-                  <Link to="/movies/devara-part-1/ET00310216" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Devara - Part 1</Link>
-                  <Link to="/movies/dhaaak/ET00407903" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Dhaaak</Link>
-                  <Link to="/movies/the-wild-robot/ET00398665" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5'}} >The Wild Robot</Link>
-                </div>
-              </div>
-
-              {/* movie-list-3 */}
-              <div className="mb-3" >
-                <div className="mb-2 font-bold font-sans" style={{ color: '#A5A5A5', fontSize: '12px' }} >MOVIES BY GENRE</div>
-                <div className="anchors-con ">
-                  <Link to="/movies/lucky-baskhar-telugu/ET00386124" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Lucky Baskhar</Link>
-                  <Link to="/movies/amaran-telugu/ET00417203" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Amaran</Link>
-                  <Link to="/movies/singham-again/ET00354858" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Singham Again</Link>
-                  <Link to="/movies/ka-2024/ET00405181" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >KA (2024)</Link>
-                  <Link to="/movies/bhool-bhulaiyaa-3/ET00353996" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Bhool Bhulaiyaa 3</Link>
-                  <Link to="/movies/venom-the-last-dance-3d/ET00413299" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Venom: The Last Dance</Link>
-                  <Link to="/movies/bagheera-telugu/ET00417585" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Bagheera</Link>
-                  <Link to="/movies/devara-part-1/ET00310216" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Devara - Part 1</Link>
-                  <Link to="/movies/dhaaak/ET00407903" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5', borderRight: '1px solid rgb(127, 127, 127)' }} >Dhaaak</Link>
-                  <Link to="/movies/the-wild-robot/ET00398665" className="mb-1 mr-1 pr-1 text-decoration-none" style={{color: '#A5A5A5'}} >The Wild Robot</Link>
-                </div>
-              </div>
-            </div>
-          </div>
-          <Foot/>
         </div>
-      </footer>
-
-    </>
+      {/* Movie Sections */}
+      <div className="container py-4" >
+        <div className="row">
+          {/* Now Showing Movies */}
+          <div className="col-12 mb-3">
+            <h6 className="text-uppercase text-light mb-3" style={{fontSize:'15px'}}> Movies Now Showing in Hyderabad</h6>
+            <div className="">{MovieLinks(nowShowing || [])}</div>
+          </div>
+          {/* Upcoming Movies */}
+          <div className="col-12 mb-3">
+            <h6 className="text-uppercase text-light mb-3"style={{fontSize:'15px'}} > Upcoming Movies in Hyderabad</h6>
+            <div>{MovieLinks(upcomingMovies || [])}</div>
+          </div>
+          {/* Movies by Genre */}
+          <div className="col-12 mb-3">
+            <h6 className="text-uppercase text-light mb-3"style={{fontSize:'15px'}}>Movies by Genre</h6>
+            <div>{genres.map((genre,index) => (
+              <Link key={genre.id} to={`/movies/genre/${genre.id}`} className="movies text-decoration-none text-secondary d-inline-block mb-2 pe-2 ms-2"
+                style={{ fontSize: "13px",  borderRight: index !== genres.length - 1 ? "1px solid #7f7f7f" : "none" }}
+              >{genre.name}</Link>
+            ))}</div>
+          </div>
+        </div>
+      </div>
+      <style>
+        {`.movies { transition: all 0.3s ease;}
+          .movies:hover,.movies:focus { color: white;font-weight: bold; transform: scale(1.1); }`
+        }
+      </style>
+      <Foot />
+    </footer>
   );
 }
 

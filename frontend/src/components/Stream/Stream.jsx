@@ -5,10 +5,7 @@ function Stream() {
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [error, setError] = useState(null);
-
   const placeholderImage = 'https://via.placeholder.com/200x300?text=No+Image';
-
-  // Fetch movies dynamically
   useEffect(() => {
     const fetchNowPlayingMovies = async () => {
       try {
@@ -16,7 +13,9 @@ function Stream() {
         if (!response.ok) throw new Error('Failed to fetch now-playing movies');
         const data = await response.json();
         setNowPlayingMovies(data.results || []);
-      } catch (err) {setError(err.message);}
+      } catch (err) {
+        setError(err.message);
+      }
     };
     const fetchUpcomingMovies = async () => {
       try {
@@ -24,46 +23,41 @@ function Stream() {
         if (!response.ok) throw new Error('Failed to fetch upcoming movies');
         const data = await response.json();
         setUpcomingMovies(data.results || []);
-      } catch (err) {setError(err.message);}
+      } catch (err) {
+        setError(err.message);
+      }
     };
-    fetchNowPlayingMovies();fetchUpcomingMovies();
+    fetchNowPlayingMovies();
+    fetchUpcomingMovies();
   }, []);
-
   return (
-    <div className="container">
-      {error && <p className="text-danger">{error}</p>}
+    <div className="container my-5">
       {/* Now Playing Movies Section */}
-      <p className="my-4 fs-2">Now Playing Movies:</p>
-      <div className="row">
+      <h3 className="fs-4 my-3 text-start">Now Playing Movies :</h3>
+      {error && <p className="text-danger ">{error}</p>}
+      <div className="row row-cols-2 row-cols-sm-2 row-cols-md-4 row-cols-lg-4 g-4">
         {nowPlayingMovies.map((movie) => (
-          <div key={movie.id} className="col-md-3 mb-3" style={{ width: '270px', height: '250px' }}>
-            <Link className="text-decoration-none text-center" to={`/movies/${movie.id}`} >
-              <div className="card text-center">
-                <img className="card-img-top" alt={movie.title || 'No title available'} style={{ width: '100%', height: '200px' }}                 
-                  src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : placeholderImage} />
-                <div className="card-body bg-dark">
-                  <p className="card-title text-light" style={{ margin: "0", padding: "0", height: '10px' }}>{movie.title}</p>
-                </div>
-              </div>
-            </Link>
-          </div>
+          <Link to={`/movies/${movie.id}`} key={movie.id} className="col d-flex justify-content-center text-decoration-none">
+            <div className="movie card bg-dark text-center text-light " style={{ width: '250px', height: '250px' }}>
+              <img className="card-img-top" style={{ width: '100%', height: '200px', objectFit: 'center' }}
+                src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : placeholderImage} alt={movie.title || 'No title available'} />
+              <p className="card-title text-truncate mt-2">{movie.title}</p>
+            </div>
+          </Link>
         ))}
       </div>
+
       {/* Upcoming Movies Section */}
-      <p className="my-4 fs-2">Upcoming Movies:</p>
-      <div className="row">
+      <h3 className="fs-4 my-3 text-start">Upcoming Movies :</h3>
+      <div className="row justify-content-center row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         {upcomingMovies.map((movie) => (
-          <div key={movie.id} className="col-md-3 mb-3" style={{ width: '270px', height: '250px' }}>
-            <Link className="text-decoration-none text-center" to={`/movies/${movie.id}`} >
-              <div className="card text-center">
-                <img className="card-img-top" alt={movie.title || 'No title available'} style={{ width: '100%', height: '206px' }} 
-                  src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : placeholderImage}/>
-                <div className="card-body bg-dark">
-                  <p className="card-title text-light mb-1" style={{ margin: "0", padding: "0", height: '10px' }}>{movie.title}</p>
-                </div>
-              </div>
-            </Link>
-          </div>
+          <Link key={movie.id} to={`/movies/${movie.id}`} className="col d-flex justify-content-center text-decoration-none">
+            <div className="card bg-dark text-light text-center" style={{ width: '250px', height: '250px' }}>
+              <img src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : placeholderImage}
+                alt={movie.title || 'No title available'} className="card-img-top" style={{width: '100%', height: '200px', objectFit: 'center' }} />
+              <p className="card-title text-truncate mt-2">{movie.title}</p>
+            </div>
+          </Link>
         ))}
       </div>
     </div>

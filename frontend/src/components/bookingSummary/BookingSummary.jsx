@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { GrPrevious } from "react-icons/gr";
+import { toast } from 'react-toastify';
+
 const BookingSummary = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [convenienceFee, setConvenienceFee] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
-  const { movieTitle, theaterName, selectedDate, selectedFormat,selectedShowtime,certification,selectedLanguage,theaterLocation, selectedSeats = [], ticketPrices,  } = location.state || {}; 
+  const [isDisabled, setIsDisabled] = useState(false);
+  const { movieTitle, theaterName, selectedDate, selectedFormat, selectedShowtime, certification, selectedLanguage, theaterLocation, selectedSeats = [], ticketPrices, } = location.state || {};
   //Calculate price
   useEffect(() => {
     const totalSeatsPrice = selectedSeats.reduce((acc, seat) => acc + getSeatPrice(seat), 0);
@@ -15,22 +18,42 @@ const BookingSummary = () => {
     setConvenienceFee(fee);
     setTotalAmount(total);
   }, [selectedSeats, ticketPrices]);
-    const handleProceed = () => {
+  // Check if the showtime has passed
+  useEffect(() => {
+    const checkShowtime = () => {
+      const now = new Date();
+      const showtimeDate = new Date(`${selectedDate} ${selectedShowtime}`);
+      const bufferTime = 10 * 60 * 1000; // 10 minutes in milliseconds
+      if (now > showtimeDate.getTime() + bufferTime) {
+        setIsDisabled(true);
+        toast.error("Movie Showtime has Expired. Redirecting to Home page...");
+        setTimeout(() => navigate("/")); // Redirect after 3 seconds
+      }
+    };
+    checkShowtime();
+    const interval = setInterval(checkShowtime, 1000); // Check every minute
+    return () => clearInterval(interval);
+  }, [selectedDate, selectedShowtime, navigate]);
+
+  const handleProceed = () => {
     // Prepare data to pass to the payment page
-    const paymentData = { movieTitle, theaterName, theaterLocation, selectedDate, selectedShowtime,selectedSeats,
-      screenName,selectedLanguage,selectedFormat,convenienceFee,certification,totalAmount,totalSeatsPrice,
+    const paymentData = {
+      movieTitle, theaterName, theaterLocation, selectedDate, selectedShowtime, selectedSeats,
+      screenName, selectedLanguage, selectedFormat, convenienceFee, certification, totalAmount, totalSeatsPrice,
     };
     // Navigate to the payment page with the state
     navigate("/payment", { state: paymentData });
   };
-  const formatDate = (date) => {const options = { day: "2-digit", month: "short" };
+  const formatDate = (date) => {
+    const options = { day: "2-digit", month: "short" };
     return new Date(date).toLocaleDateString("en-US", options);
   };
 
   // Determine if the date is "Today"
-  const getDateLabel = (date) => {const today = new Date();const inputDate = new Date(date);
-    return inputDate.toDateString() === today.toDateString() 
-    ? `Today, ${formatDate(date)}` : `${formatDate(date)}`;
+  const getDateLabel = (date) => {
+    const today = new Date(); const inputDate = new Date(date);
+    return inputDate.toDateString() === today.toDateString()
+      ? `Today, ${formatDate(date)}` : `${formatDate(date)}`;
   };
   const formattedDate = selectedDate ? getDateLabel(selectedDate) : "";
   // Function to calculate the seat price based on the row
@@ -66,14 +89,16 @@ const BookingSummary = () => {
   };
   const totalSeatsPrice = calculateTotalPrice();
   const seatPrice = selectedSeats.length > 0 ? getSeatPrice(selectedSeats[0]) : 0;
+
+
   return (
     <>
-      <div className="d-flex align-items-center justify-content-between border-bottom p-3 bg-white">
-        <GrPrevious className="text-secondary fs-4 cursor-pointer" onClick={() => navigate(-1)}/>
+      <div className="d-flex align-items-center justify-content-center border-bottom p-3 bg-white">
+        <GrPrevious className="text-secondary fs-4 cursor-pointer" onClick={() => navigate(-1)} />
         <div className="flex-grow-1 ms-3">
           <div className="d-flex flex-wrap gap-2">
-            <h6 className="fs-5 text-dark d-flex align-items-center justify-content-center ">{movieTitle}</h6>
-            <button id="badge" style={{ width: '25px', height: '25px' }} className="btn border-secondary rounded-circle d-flex align-items-center justify-content-center">
+            <h6 className="fs-5 text-muted d-flex align-items-center justify-content-center ">{movieTitle}</h6>
+            <button id="badge" style={{ width: '25px', height: '25px', cursor: 'text' }} className="btn border-secondary rounded-circle d-flex align-items-center justify-content-center">
               <small className="badge text-secondary">{certification}</small>
             </button>
           </div>
@@ -81,36 +106,44 @@ const BookingSummary = () => {
         </div>
       </div>
       {/* Booking Summary Section */}
-      <div className="booking container mt-2">
-        <h4 className="mb-2 mx-3 text-danger">Booking Summary</h4>
+      <div className="container mt-3">
+        <h4 className="mb-2 mx-2 text-danger">Booking Summary</h4>
         {/* Booking Details Ticket Fare and Payment Details */}
-        <div className="card p-3 mb-4" style={{backgroundColor:'ButtonShadow'}}>
-          <div className="row">
-            <div className="col-md-6 px-5">
-              <p><strong>Screen</strong></p>
-              <p><strong>Theater</strong> </p>
-              <p><strong>Seats (for {selectedSeats.length} tickets)</strong> </p>
-              <p><strong>Ticket Fare (each)</strong> </p>
-              <p><strong>Subtotal</strong></p>
-              <p><strong>Convenience Fee (10%)</strong> </p>
-              <p><strong>Amount Payable</strong> </p>
-            </div>
-            <div className="col-md-6 text-start">
-              <p><strong>: </strong>  {screenName}</p>
-              <p><strong>: </strong>{theaterName} ,{theaterLocation}</p>
-              <p> <strong>: </strong>{selectedSeats.join(', ')}</p>
-              <p><strong>: </strong> Rs. {seatPrice}</p>
-              <p><strong>: </strong> Rs. {totalSeatsPrice}</p>
-              <p><strong>: </strong> Rs. {convenienceFee.toFixed(2)}</p>
-              <p><strong>: </strong> Rs. {(totalSeatsPrice + convenienceFee).toFixed(2)}</p>
-            </div>
-            {/* Proceed Button */}
-            <div className="text-center">
-              <p className='badge text-muted m-0 p-0'>By proceeding, you agree to our Terms and Conditions.</p> <br />
-              <button className="btn btn-danger btn-lg" onClick={handleProceed}>TOTAL: Rs.{(totalSeatsPrice + convenienceFee).toFixed(2)}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Proceed</button>
-            </div>
+        <div className="card p-4 mb-4" style={{ backgroundColor: 'ButtonShadow' }}>
+          <div className="d-flex justify-content-start mb-1">
+            <div className='col-6'><strong>Screen</strong></div>
+            :&nbsp; <span className="text-muted">{screenName}</span>
           </div>
-        </div>       
+          <div className="d-flex justify-content-start mb-1">
+            <div className='col-6'><strong>Theater</strong></div>
+            :&nbsp; <span className="text-muted"> {theaterName}, {theaterLocation}</span>
+          </div>
+          <div className="d-flex justify-content-start mb-1">
+            <div className='col-6'><strong>Seats ({selectedSeats.length} tickets)</strong></div>
+            :&nbsp; <span className="text-muted">{selectedSeats.join(', ')}</span>
+          </div>
+          <div className="d-flex justify-content-start mb-1">
+            <div className='col-6'><strong>Ticket Fare (each)</strong></div>
+            :&nbsp; <span className="text-muted">Rs. {seatPrice}</span>
+          </div>
+          <div className="d-flex justify-content-start mb-1">
+            <div className='col-6'><strong>Subtotal</strong></div>
+            :&nbsp; <span className="text-muted">Rs. {totalSeatsPrice}</span>
+          </div>
+          <div className="d-flex justify-content-start mb-1">
+            <div className='col-6'><strong>Convenience Fee (10%)</strong></div>
+            :&nbsp; <span className="text-muted">Rs. {convenienceFee.toFixed(2)}</span>
+          </div>
+          <div className="d-flex justify-content-start mb-1">
+            <div className='col-6'><strong>Amount Payable</strong></div>
+            :&nbsp; <span className="text-muted">Rs. {(totalSeatsPrice + convenienceFee).toFixed(2)}</span>
+          </div>
+          {/* Proceed Button */}
+          <div className="text-center">
+            <small className='text-muted'>By proceeding, you agree to our Terms and Conditions.</small> <br />
+            <button className="btn btn-danger btn-sm-100 mt-3 " disabled={isDisabled} onClick={handleProceed}>TOTAL: Rs.{(totalSeatsPrice + convenienceFee).toFixed(2)}&nbsp;Proceed</button>
+          </div>
+        </div>
       </div>
     </>
   );

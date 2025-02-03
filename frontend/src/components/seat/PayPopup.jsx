@@ -1,10 +1,9 @@
-import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
 const PayPopup = ({ showModal, handleClose, handleProcess }) => {
   const handleAccept = () => {handleProcess(); handleClose();}; // Trigger handleProcess when Accept is clicked then Close the modal
   return (
-    <Modal className="m-5"  show={showModal} onHide={handleClose} centered>
+    <Modal show={showModal} onHide={handleClose} centered>
       <Modal.Header closeButton style={{ borderBottom: "none" }}>
         <Modal.Title className="w-100 text-center">Terms & Conditions</Modal.Title>
       </Modal.Header>

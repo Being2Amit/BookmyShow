@@ -1,0 +1,10 @@
+{
+  "restartable": "rs",
+  "ext": "js,mjs,cjs,json",
+  "ignore": [],
+  "watch": ["server.js", "src"],
+  "execMap": {
+    "js": "node --trace-warnings"
+  },
+  "exitcrash": true
+}

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate,Link} from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import Cookies from 'js-cookie';
 import { ToastContainer, toast } from 'react-toastify';
+import { TbPasswordUser} from "react-icons/tb";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
-//import { Link } from "react-router-dom";
+
 function Payment() {
   const [data, setData] = useState({ mobile: '', password: '' }); // 'mobile' will store User_Name, email or phone number
   const [error, setError] = useState('');
@@ -12,12 +14,13 @@ function Payment() {
   const [isLoading, setIsLoading] = useState(false);
   const [poster, setPoster] = useState("");
   const [paymentStatus, setPaymentStatus] = useState(null); // Payment status tracker
-  //const [showLoginForm, setShowLoginForm] = useState(true);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const Data = location.state;
   const [user, setUser] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const categories = { premium: ['N', 'M', 'L', 'K'], Gold: ['J', 'I', 'H', 'G', 'F'], Silver: ['D', 'C', 'B', 'A'], };
   const getCategory = (seat) => {// Function to determine category based on seat row
     const seatRow = seat.charAt(0); // Get the row (e.g., "M" from "M11")
@@ -47,7 +50,7 @@ function Payment() {
   const formattedDate = Data.selectedDate ? getDateLabel(Data.selectedDate) : "";
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setError('');
+    setError({ ...error, [name]: '', server: '' });
     setData({ ...data, [name]: value });
   };
   const handleMakePayment = () => {
@@ -60,27 +63,54 @@ function Payment() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!data.mobile.trim() || !data.password.trim()) {
-      setError('Please fill out all fields');
+      setError({
+        ...error,
+        mobile: !data.mobile.trim() ? 'Please enter your mobile/email' : '',
+        password: !data.password.trim() ? 'Please enter your password' : '',
+      });
+      return;
+    }
+    if (!validateEmail(data.mobile) && !/^\d+$/.test(data.mobile)) {
+      setError({ ...error, mobile: 'Please enter a valid email or mobile number' });
       return;
     }
     setIsLoading(true);
     try {
       const res = await axios.post('http://localhost:5000/login', data);
       if (res.data.success) {
-        localStorage.setItem('token', res.data.token);
-        console.log(res.data);
-        setUser(res.data.result)
-        setError('');
-        login();
-        setShowLoginForm(false);
-      }
-      else {
-        setError(res.data.message || 'Invalid credentials');
+        const token = res.data.token;
+        const name = res.data.result[0].fullname;
+        // Store in both cookies and localStorage
+        Cookies.set('token', token, { expires: 7 }); // Set cookie for token
+        localStorage.setItem('token', token); // Optional: Keep token in localStorage
+        localStorage.setItem('name', name); // Store user name or other non-sensitive info in localStorage
+        setError({ mobile: '', password: '', server: '' });
+        setUser(res.data.result[0]);
+        login(token); // Pass the token to the context's login function
+        toast.success('Login successful!');
+      } else {
+        if (res.data.message === 'User not found') {
+          setError({ ...error, mobile: 'Invalid email or mobile' });
+        } else if (res.data.message === 'Invalid password') {
+          setError({ ...error, password: 'Invalid password' });
+        } else {
+          setError({ ...error, server: res.data.message || 'Invalid credentials' });
+        }
       }
     } catch (err) {
-      setError('An error occurred. Please try again later.');
+      console.error('Error details:', err.response?.data || err.message);
+      if (err.response?.status === 404) {
+        setError({ ...error, mobile: 'User not found' });
+      } else if (err.response?.status === 401) {
+        setError({ ...error, password: `Passwords don't match` });
+      } else {
+        setError({ ...error, server: 'An unexpected error occurred in Server. Please try again later.' });
+      }
     }
     setIsLoading(false);
+  };
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible((prevState) => !prevState);
   };
   const handlePayment = async (e) => {
     e.preventDefault();
@@ -90,7 +120,7 @@ function Payment() {
         key_secret: 'EmH6eToe5CvCfAfgfADREv3C',
         amount: Data.totalAmount * 100,
         currency: "INR",
-        name: "MovieHive.com",
+        name: "BookAnyTickets.com",
         description: "Movie Ticket Payment",
         image: "logo.png",
         handler: (response) => {// Only proceed if paymentStatus is not set (avoiding duplicate processing)
@@ -104,9 +134,9 @@ function Payment() {
           }
         },
         prefill: {
-          name: user[0]?.fullname || "",
-          email: user[0]?.email || "",
-          contact: user[0]?.mobile || "",
+          name: user.fullname || "",
+          email: user.email || "",
+          contact: user.mobile || "",
         },
         theme: { color: "#F37254" },
       };
@@ -139,8 +169,8 @@ function Payment() {
       const movies = response.data.results;
       if (movies.length > 0) {
         const latestMovie = movies.reduce((latest, current) => {
-          const latestDate = new Date(latest.release_date || "1900-01-01");
-          const currentDate = new Date(current.release_date || "1900-01-01");
+          const latestDate = new Date(latest.release_date || "2000-01-01");
+          const currentDate = new Date(current.release_date || "2000-01-01");
           return currentDate > latestDate ? current : latest;
         });
         setPoster(`https://image.tmdb.org/t/p/w500${latestMovie.poster_path}`);
@@ -153,28 +183,42 @@ function Payment() {
   useEffect(() => {
     fetchPoster(); // Fetch poster when component mounts
   }, [Data.movieTitle]);
+
   return (
     <div className="payment container">
       <div className="row mt-4">
         <div className="col-md-6">
           {/* Show Login Form only if not logged in */}
           {!loggedIn && (
-            <form className="card text-center m-auto my-5 shadow p-3 bg-light" onSubmit={handleSubmit}>
-              <h1 className="fs-2 text-center mb-3">Login</h1>
-              <input type="text" className="form-control mb-3" name="mobile" placeholder="Enter your Mobile/Email" value={mobile} onChange={handleChange} />
-              <input type="password" className="form-control mb-3" name="password" placeholder="Enter your password" value={password} onChange={handleChange} />
-              <div className="button">
-                <button type="submit" className="btn btn-danger" disabled={isLoading}>{isLoading ? 'Logging in...' : 'Login'}</button>
-                {error && <p className="text-danger mt-3">{error}</p>}
+            <form className="card shadow p-4 rounded position-relative text-center" onSubmit={handleSubmit}>
+              <h1 className="fs-4 text-center mb-3">Login</h1>
+              <div className='input-group mb-2'>
+                <span className="input-group-text"><i className="bi bi-envelope-fill"></i></span>
+                <input type="text" className="form-control border-outline-none" name="mobile" placeholder="Enter your Mobile/Email" value={mobile} onChange={handleChange}
+                  style={{ outline: 'none', boxShadow: 'none', border: '1px solid #ced4da', }} />
               </div>
-              <div className="mt-2">
-                {/* <p className='col-12 text-center'>Forgot password ?<Link to="/forgot" className="text-decoration-none">&nbsp;Reset</Link></p>*/}
-                <p className="col-12">Don't have an account?<Link to="/register" className="text-decoration-none">&nbsp;Sign up</Link></p>
-              </div> 
+              {error.mobile && <div className="text-danger text-start mb-3"><small>{error.mobile}</small></div>}
+              <div className='input-group mb-2 position-relative '>
+                <span className="input-group-text"><TbPasswordUser /></span>
+                <input type={isPasswordVisible ? "text" : "password"} className="form-control border-outline-none" name="password"
+                  placeholder="Enter your password" value={password} onChange={handleChange} style={{ outline: 'none', boxShadow: 'none', border: '1px solid #ced4da', }} />
+                <button type="button" onClick={togglePasswordVisibility} className="position-absolute top-50 end-0 translate-middle-y me-2" style={{ zIndex: 1 }} >
+                  <i className={`bi ${isPasswordVisible ? 'bi-eye-slash-fill' : 'bi-eye-fill'}`} style={{ fontSize: '1.2rem' }}></i>
+                </button>
+              </div>
+              {error.password && <div className="text-danger text-start mb-3"><small>{error.password}</small></div>}
+              <div className="login">
+                <button type="submit" className="btn btn-danger" disabled={isLoading}>{isLoading ? 'Logging in...' : 'Login'}</button>
+                {error.server && <div className="text-danger text-center mb-3"><small>{error.server}</small></div>}
+              </div>
+              <div className="mt-2 text-center">
+                {/* <p className='col-12'>Forgot password? <Link to="/forgot" className="text-decoration-none">Reset</Link></p> */}
+                <p className="col-12">Don't have an account? <Link to="/register" className="text-decoration-none">Sign up</Link></p>
+              </div>
             </form>
           )}
           {/* Payment Options */}
-          < div className="accordion mb-3" id="paymentAccordion" >
+          < div className="accordion mt-3 mb-3" id="paymentAccordion" >
             <div className="accordion-item ">
               <h2 className="accordion-header" id="headingPayment">
                 <button className="accordion-button collapsed bg-light" style={{ paddingLeft: "40%" }} type="button" onClick={handleMakePayment} disabled={!loggedIn}>
@@ -199,15 +243,15 @@ function Payment() {
                 <div className="col-md-3">
                   {poster && (
                     <img src={poster} alt={`${Data.movieTitle} Poster`} className="img-fluid mb-3"
-                    style={{ borderRadius: "10px", width: '150px', height: '150px' }}/>
+                    style={{ borderRadius: "10px", width: '150px', height: '150px' }} />
                   )}
                 </div>
                 <div className="col">
                   <p className="d-flex justify-content-between align-items-center mb-1">
-                    <strong>{Data.movieTitle} ({Data.selectedLanguage}) ({Data.certification})</strong>&nbsp;
+                    <strong>{Data.movieTitle} ({Data.selectedLanguage})</strong>&nbsp;
                     <span className="badge bg-secondary text-white">{Data.selectedSeats.length} {Data.selectedSeats.length > 1 ? "Tickets" : "Ticket"}</span>
                   </p>
-                  <p className="text-muted mb-1">{Data.selectedLanguage}, {Data.selectedFormat}</p>
+                  <p className="text-muted mb-1">{Data.selectedLanguage}, {Data.selectedFormat} ({Data.certification})</p>
                   <p className="text-muted mb-1">{Data.theaterName}: {Data.theaterLocation} ({Data.screenName})</p>
                   {Object.entries(groupedSeats).map(([category, seats], index) => {
                     if (seats.length > 0) {

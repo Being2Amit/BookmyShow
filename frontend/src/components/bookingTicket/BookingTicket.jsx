@@ -40,7 +40,7 @@ function BookingModal({ show, onClose, movieId }) {
   };
   const handlenavigate= (language, format) => {
     navigate("/MovieShow", {
-      state: { movieId,movieTitle: movieDetails?.title,selectedLanguage: language,selectedFormat: format,},
+      state: { movieId,movieTitle: movieDetails?.title,selectedLanguage: language,selectedFormat: format},
     });
   };
   return (
@@ -52,22 +52,22 @@ function BookingModal({ show, onClose, movieId }) {
             <button type="button" className="btn-close position-absolute top-0 end-0 mt-3 me-3" aria-label="Close" onClick={onClose}></button>
           </div>
           <div className="modal-body">
-            <p className="mx-1 text-muted">Select Language and Format</p>
+            <h5 className="mb-2">Select Language and Format</h5>
             <div className="mb-3">
-              <h5>Languages:</h5>
+              <h6>Languages:</h6>
               <div className="d-flex flex-wrap">
                 {languages.map((lang, index) => (
-                  <button key={index} className={`btn mx-1 mb-2 ${lang === selectedLanguage ? "btn-success" : "btn-secondary"}`}onClick={() => handleLanguageSelect(lang)}>
+                  <button key={index} className={`btn mx-1 mb-2 ${lang === selectedLanguage ? "btn-success" : "btn-outline-secondary"}`} onClick={() => handleLanguageSelect(lang)}>
                     {lang}
                   </button>
                 ))}
               </div>
             </div>
             <div className="mb-3">
-              <h5>Formats:</h5>
+              <h6>Formats:</h6>
               <div className="d-flex flex-wrap">
                 {formats.map((format, index) => (
-                  <button key={index} className={`btn mx-1 mb-2 ${format === selectedFormat ? "btn-success" : "btn-secondary"}`} onClick={() => handleFormatSelect(format)}>
+                  <button key={index} className={`btn mx-1 mb-2 ${format === selectedFormat ? "btn-success" : "btn-outline-secondary"}`} onClick={() => handleFormatSelect(format)}>
                     {format}
                   </button>
                 ))}

@@ -40,7 +40,8 @@ function OrderSummary() {
     try {
       const response = await axios.post('http://localhost:5000/book', bookingData, {
         headers: {'Content-Type': 'application/json',Authorization: `Bearer ${localStorage.getItem('token')}`,}, // Include JWT token for authentication
-      });//console.log(response);
+      });console.log(localStorage.getItem('token'));
+
       if (response.status === 201) {toast.success(`Booking saved! Booking ID: ${response.data.bookingId}`);} 
       else { toast.error(`Error: ${response.data.message}`);}
     } catch (error) {//console.error('Error saving booking:', error);

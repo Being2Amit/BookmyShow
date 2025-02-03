@@ -1,13 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);  
   const [showPasswords, setShowPasswords] = useState(false); // For toggling password visibility
   const [passwordStrength, setPasswordStrength] = useState(""); // For password strength feedback
 
@@ -72,7 +71,13 @@ function ChangePassword() {
       }
     }
   }
-
+  const handleCancel = () => {
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setPasswordStrength("");
+    setIsEditing(false);
+  }
   return (
     <div className="d-flex justify-content-center mt-5 pt-5">
       <div className="card p-4 shadow-lg w-100" style={{ maxWidth: "500px" }}>
@@ -80,14 +85,14 @@ function ChangePassword() {
           <form onSubmit={handleSubmit}>
             <div className="input-group mb-3">
               <span className="input-group-text"><i className="bi bi-lock-fill"></i></span>
-              <input type={showPasswords ? "text" : "password"} className="form-control" placeholder="Current Password" name="currentPassword"
-                value={currentPassword} onChange={handleChange} disabled={!isEditing}
+              <input type={showPasswords ? "text" : "password"} className="form-control" placeholder="Current Password" name="currentPassword"  value={currentPassword} 
+               onChange={handleChange} disabled={!isEditing} required style={{ outline: 'none', boxShadow: 'none', border: '1px solid #ced4da', }} 
               />
             </div>
             <div className="input-group mb-3">
               <span className="input-group-text"> <i className="bi bi-lock-fill"></i></span>
-              <input type={showPasswords ? "text" : "password"} className="form-control" placeholder="New Password" name="newPassword"
-                value={newPassword} onChange={handleChange} disabled={!isEditing}
+              <input type={showPasswords ? "text" : "password"} className="form-control" placeholder="New Password" name="newPassword" value={newPassword} 
+                onChange={handleChange} disabled={!isEditing} required style={{ outline: 'none', boxShadow: 'none', border: '1px solid #ced4da', }} 
               />
             </div>
             {isEditing && newPassword && (
@@ -100,16 +105,18 @@ function ChangePassword() {
             <div className="input-group mb-3">
               <span className="input-group-text"><i className="bi bi-lock-fill"></i></span>
               <input type={showPasswords ? "text" : "password"} className="form-control" placeholder="Confirm New Password" name="confirmPassword" value={confirmPassword}
-                onChange={handleChange} disabled={!isEditing}
+                onChange={handleChange} disabled={!isEditing} required style={{ outline: 'none', boxShadow: 'none', border: '1px solid #ced4da', }} 
               />
             </div>
             <div className="mb-3">
-              <input type="checkbox" id="togglePasswordVisibility" className="form-check-input" checked={showPasswords} onChange={togglePasswordVisibility} />
+              <input type="checkbox" id="togglePasswordVisibility" className="form-check-input" checked={showPasswords} onChange={togglePasswordVisibility} style={{ outline: 'none', boxShadow: 'none', border: '1px solid gray', }}  />
               <label htmlFor="togglePasswordVisibility" className="form-check-label ms-2">Show Passwords</label>
             </div>
             <div className="text-center">
-              {isEditing ? (<button type="button" className="btn btn-primary" onClick={handleSubmit}>Save Changes</button>)
-                : (<button type="button" className="btn btn-secondary " onClick={() => setIsEditing(true)}>Edit Password</button>)}
+              {isEditing ? (<div className="d-flex justify-content-center gap-3">
+                <button type="button" className="btn btn-outline-primary" onClick={handleSubmit}>Save Changes</button>
+                <button type="button" className="btn btn-outline-danger "onClick={handleCancel}>Cancel</button></div>): (
+              <button type="button" className="btn btn-outline-secondary " onClick={() => setIsEditing(true)}>Edit Password</button>)}
             </div>
           </form>
         </div>
